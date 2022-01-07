@@ -1,0 +1,10 @@
+@media screen and (max-width: 600px) {
+  header[role=banner] {
+    align-items: flex-start;
+  }
+
+  nav[role=navigation] ul {
+    flex-direction: column;
+  }
+}
+/*# sourceMappingURL=index4.0df2a770.css.map */

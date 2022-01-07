@@ -1,0 +1,27 @@
+{
+  "name": "cursors-emitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "source": "src/index.pug",
+  "scripts": {
+    "start": "parcel src/index.pug",
+    "build": "parcel build src/index.pug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/marvinx-x/cursors-emitter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/marvinx-x/cursors-emitter/issues"
+  },
+  "homepage": "https://gitlab.com/marvinx-x/cursors-emitter#readme",
+  "devDependencies": {
+    "@parcel/transformer-pug": "^2.1.1",
+    "@parcel/transformer-sass": "^2.1.1",
+    "parcel": "^2.1.1"
+  }
+}

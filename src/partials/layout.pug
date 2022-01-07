@@ -1,0 +1,27 @@
+block vars
+  - var nbrCursors = 4;
+
+doctype html
+html(lang="en")
+  head
+    - var title = "Cursors emitter | Marlène BRUHAT | Marvinx | Creative Developer"
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    meta(name="description" content=title)
+    link(rel="prefetch" href=googleFontsUrl as="font")
+    link(href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet")
+    link(type="text/css" rel="stylesheet" href="styles/_base.scss")
+    link(type="text/css" rel="stylesheet" href="styles/_breakpoints.scss")
+    title= title
+  body(class="preload")
+    include header
+
+    main(role="main")
+      block main
+
+    include footer
+
+    #cannot-use
+      p You can use this only on no touch devices
+
+    script(type="module" src="index.js")
