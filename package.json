@@ -23,5 +23,9 @@
     "@parcel/transformer-pug": "^2.1.1",
     "@parcel/transformer-sass": "^2.1.1",
     "parcel": "^2.1.1"
+  },
+  "dependencies": {
+    "@swup/overlay-theme": "^1.1.1",
+    "swup": "^2.0.14"
   }
 }

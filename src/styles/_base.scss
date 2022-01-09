@@ -6,9 +6,9 @@
   --font-size-global : 1.6rem;
   --font-family : 'Inter', sans-serif;
   /* COLORS */
-  --color-primary : #2F3E46;
-  --color-secondary : #354F52;
-  --color-third : #52796F;
+  --color-primary : #364958;
+  --color-secondary : #55828b;
+  --color-third : #c9e4ca;
   --white : #ffffff;
   /*  */
   --padding-global : clamp(3.6rem, 5vw, 6.2rem);
@@ -38,7 +38,7 @@ body{
   -moz-osx-font-smoothing: grayscale;
   font-size: var(--font-size-global);
   font-family: var(--font-family);
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 li{
@@ -47,7 +47,7 @@ li{
 
 a{
   text-decoration: none;
-  color : var(--color-third)
+  color : var(--color-secondary)
 }
 
 /*  */
@@ -61,7 +61,7 @@ header{
   position: fixed;
   top: var(--padding-global);
   left: var(--padding-global);
-  width: calc(100% - var(--padding-global)*2);
+  z-index: 10000;
 }
 
 /*  */
@@ -105,7 +105,7 @@ h1{
     &:last-of-type{
       transform: rotateY(180deg);
       path{
-        fill : var(--color-third);
+        fill : var(--color-secondary);
       }
     }
   }
@@ -115,6 +115,12 @@ h1{
 /* NAV */
 /*  */
 nav[role=navigation]{
+  position: fixed;
+  top: var(--padding-global);
+  right: var(--padding-global);
+  height: var(--length-logo);
+  display: flex;
+  align-items: center;
 
   ul{
     display: flex;
@@ -140,7 +146,7 @@ nav[role=navigation]{
       transition-timing-function: cubic-bezier(0.2, 0.57, 0.67, 1.53);
       pointer-events: none;
       transform: scale3d(1, 0.1, 1);
-      color: var(--color-third);
+      color: var(--color-secondary);
     }
 
     span{
@@ -185,6 +191,7 @@ footer[role=contentinfo]{
   position: fixed;
   bottom: var(--padding-global);
   right: var(--padding-global);
+  z-index: 10000;
 
   ul{
     display: flex;
@@ -214,7 +221,6 @@ footer[role=contentinfo]{
     }
 
     &:hover{
-
       &::before{
         transform-origin: 0% 50%;
         transform: scale3d(1, 1, 1);
@@ -226,7 +232,6 @@ footer[role=contentinfo]{
 /*  */
 /*  CANNOT USE */
 /*  */
-
 #cannot-use{
   position: fixed;
   top: 0;
@@ -244,8 +249,9 @@ footer[role=contentinfo]{
 }
 
 .touch{
-
   #cannot-use{
     display: flex;
   }
 }
+
+

@@ -3,6 +3,9 @@
     align-items: flex-start;
   }
 
+  nav[role=navigation] {
+    height: auto;
+  }
   nav[role=navigation] ul {
     flex-direction: column;
   }

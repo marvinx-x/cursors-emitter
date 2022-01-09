@@ -5,9 +5,9 @@
   --font-size-global: 1.6rem;
   --font-family: "Inter", sans-serif;
   /* COLORS */
-  --color-primary: #2F3E46;
-  --color-secondary: #354F52;
-  --color-third: #52796F;
+  --color-primary: #364958;
+  --color-secondary: #55828b;
+  --color-third: #c9e4ca;
   --white: #ffffff;
   /*  */
   --padding-global: clamp(3.6rem, 5vw, 6.2rem);
@@ -37,7 +37,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: var(--font-size-global);
   font-family: var(--font-family);
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 li {
@@ -46,7 +46,7 @@ li {
 
 a {
   text-decoration: none;
-  color: var(--color-third);
+  color: var(--color-secondary);
 }
 
 /*  */
@@ -60,7 +60,7 @@ header {
   position: fixed;
   top: var(--padding-global);
   left: var(--padding-global);
-  width: calc(100% - var(--padding-global) * 2);
+  z-index: 10000;
 }
 
 /*  */
@@ -96,12 +96,20 @@ h1 span:last-of-type {
   transform: rotateY(180deg);
 }
 h1 span:last-of-type path {
-  fill: var(--color-third);
+  fill: var(--color-secondary);
 }
 
 /*  */
 /* NAV */
 /*  */
+nav[role=navigation] {
+  position: fixed;
+  top: var(--padding-global);
+  right: var(--padding-global);
+  height: var(--length-logo);
+  display: flex;
+  align-items: center;
+}
 nav[role=navigation] ul {
   display: flex;
   flex-flow: row wrap;
@@ -125,7 +133,7 @@ nav[role=navigation] a::before {
   transition-timing-function: cubic-bezier(0.2, 0.57, 0.67, 1.53);
   pointer-events: none;
   transform: scale3d(1, 0.1, 1);
-  color: var(--color-third);
+  color: var(--color-secondary);
 }
 nav[role=navigation] a span {
   transform: translate3d(0, 0, 0);
@@ -162,6 +170,7 @@ footer[role=contentinfo] {
   position: fixed;
   bottom: var(--padding-global);
   right: var(--padding-global);
+  z-index: 10000;
 }
 footer[role=contentinfo] ul {
   display: flex;

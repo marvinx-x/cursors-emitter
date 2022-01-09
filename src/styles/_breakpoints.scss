@@ -5,6 +5,8 @@
   }
 
   nav[role=navigation]{
+    height: auto;
+
     ul{
       flex-direction: column;
     }

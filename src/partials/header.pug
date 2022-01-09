@@ -4,6 +4,6 @@ header(role="banner")
         span: svg(aria-hidden="true" viewBox='0 0 62 62' preserveAspectRatio='xMinYMin meet')
           path(aria-hidden="true" d="M34.2,27.8V0H0v27.8h6.3V6.1h7.6v13.8h6.1V6.3h7.9V62H62V27.8H34.2z M55.9,41.9h-14v6.3h14v7.8H34.2V34.2h21.8V41.9z")
 
-  nav(role="navigation"): ul
-    - for(var i=0; i < nbrCursors; i++)
-      li: a(href="index"+(i == 0 ? "" : i+1)+".pug"): span= "Cursor "+(i+1)
+nav(role="navigation"): ul
+  - for(var i=0; i < nbrCursors; i++)
+    li: a(href="index"+(i == 0 ? "" : i+1)+".pug"): span= "Cursor "+(i+1)
