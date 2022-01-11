@@ -1,15 +1,9 @@
 /* VARS */
-
 :root{
   font-size: 62.5%;
   /* FONT */
   --font-size-global : 1.6rem;
   --font-family : 'Inter', sans-serif;
-  /* COLORS */
-  --color-primary : #364958;
-  --color-secondary : #55828b;
-  --color-third : #c9e4ca;
-  --white : #ffffff;
   /*  */
   --padding-global : clamp(3.6rem, 5vw, 6.2rem);
   --length-logo : 6rem;
@@ -47,7 +41,7 @@ li{
 
 a{
   text-decoration: none;
-  color : var(--color-secondary)
+  color : var(--color-secondary);
 }
 
 /*  */
@@ -121,6 +115,7 @@ nav[role=navigation]{
   height: var(--length-logo);
   display: flex;
   align-items: center;
+  cursor: none;
 
   ul{
     display: flex;
@@ -182,6 +177,7 @@ main[role=main]{
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: none;
 }
 
 /*  */

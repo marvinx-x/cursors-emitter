@@ -524,6 +524,7 @@ var _swup = require("swup");
 var _swupDefault = parcelHelpers.interopDefault(_swup);
 var _overlayTheme = require("@swup/overlay-theme");
 var _overlayThemeDefault = parcelHelpers.interopDefault(_overlayTheme);
+var _cursor = require("./scripts/cursor");
 const classActive = 'active';
 function isTouchDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
@@ -541,19 +542,24 @@ window.addEventListener('load', (e1)=>{
         plugins: [
             new _overlayThemeDefault.default({
                 color: getComputedStyle(document.body).getPropertyValue('--color-third'),
-                duration: 600,
+                duration: 1000,
                 direction: 'to-right'
             })
         ]
     });
-    swup.on('clickLink', function(e) {
+    const setCursor = ()=>new _cursor.Cursor('#cursor')
+    ;
+    setCursor();
+    swup.on('clickLink', (e)=>{
         const allLinks = document.querySelectorAll("nav[role='navigation'] a");
         for (const link of allLinks)link.classList.remove(classActive);
         e.delegateTarget.classList.add(classActive);
     });
+    swup.on('contentReplaced', ()=>setCursor()
+    );
 });
 
-},{"swup":"guAQY","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","@swup/overlay-theme":"5E6bI"}],"guAQY":[function(require,module,exports) {
+},{"swup":"guAQY","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","@swup/overlay-theme":"5E6bI","./scripts/cursor":"aTDK2"}],"guAQY":[function(require,module,exports) {
 'use strict';
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1972,6 +1978,54 @@ exports.export = function(dest, destName, get) {
     ]));
 });
 
-},{}]},["j1F46","hD4hw"], "hD4hw", "parcelRequirecea7")
+},{}],"aTDK2":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Cursor", ()=>Cursor
+);
+class Cursor {
+    constructor(el){
+        this.node = document.querySelector(el);
+        this.bounds = this.node.getBoundingClientRect();
+        this.xStart = window.innerWidth / 2;
+        this.yStart = window.innerHeight / 2;
+        this.mouse = {
+            x: this.xStart,
+            y: this.yStart
+        };
+        this.pos = {
+            x: this.xStart,
+            y: this.yStart
+        };
+        this.diff = {
+            x: null,
+            y: null
+        };
+        this.speed = 0.25;
+        this.maxSqueeze = 0.6;
+        this.accelerator = 1000;
+        this.updateCoordinates = (e)=>{
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+        };
+        window.addEventListener('mousemove', this.updateCoordinates);
+        this.loop();
+    }
+    loop() {
+        this.diff.x = this.mouse.x - this.pos.x;
+        this.diff.y = this.mouse.y - this.pos.y;
+        this.pos.x += this.diff.x * this.speed;
+        this.pos.y += this.diff.y * this.speed;
+        this.squeeze = Math.min(Math.sqrt(Math.pow(this.diff.x, 2) + Math.pow(this.diff.y, 2)) / this.accelerator, this.maxSqueeze);
+        const translate = `translate3d(${this.pos.x + 'px'},${this.pos.y + 'px'},0)`;
+        const scale = `scale(${1 + this.squeeze},${1 - this.squeeze})`;
+        const rotate = `rotate(${Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI}deg)`;
+        this.node.style.transform = translate + rotate + scale;
+        requestAnimationFrame(()=>this.loop()
+        );
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["j1F46","hD4hw"], "hD4hw", "parcelRequirecea7")
 
 //# sourceMappingURL=index.379dd93c.js.map

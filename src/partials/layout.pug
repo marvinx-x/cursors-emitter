@@ -10,8 +10,7 @@ html(lang="en")
     meta(name="description" content=title)
     link(rel="prefetch" href=googleFontsUrl as="font")
     link(href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet")
-    link(type="text/css" rel="stylesheet" href="styles/_base.scss")
-    link(type="text/css" rel="stylesheet" href="styles/_breakpoints.scss")
+    link(type="text/css" rel="stylesheet" href="styles/_styles.scss")
     title= title
   body(class="preload")
     include header
@@ -19,8 +18,11 @@ html(lang="en")
     main(role="main" id="swup")
       block main
 
+      #cursor
+
     include footer
     #cannot-use
       p You can use this only on no touch devices
 
     script(type="module" src="index.js")
+    //- script(type="module" src="scripts/cursor.js")

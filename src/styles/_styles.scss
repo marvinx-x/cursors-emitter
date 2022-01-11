@@ -1,0 +1,11 @@
+:root{
+  --color-primary : #364958;
+  --color-secondary : #55828b;
+  --color-third : #c9e4ca;
+  --white : #ffffff;
+}
+
+@import 'func';
+@import 'base';
+@import 'breakpoints';
+@import 'cursor';

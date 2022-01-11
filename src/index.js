@@ -1,5 +1,6 @@
 import Swup from 'swup';
 import SwupOverlayTheme from '@swup/overlay-theme';
+import { Cursor } from './scripts/cursor';
 
 const classActive = 'active';
 
@@ -20,14 +21,19 @@ window.addEventListener('load', (e) => {
   const swup = new Swup({
     plugins: [new SwupOverlayTheme({
       color: getComputedStyle(document.body).getPropertyValue('--color-third'),
-      duration: 600,
+      duration: 1000,
       direction: 'to-right',
     })]
   });
 
-  swup.on('clickLink', function(e) {
+
+  const setCursor = () => new Cursor('#cursor');
+  setCursor();
+  swup.on('clickLink', (e) => {
     const allLinks = document.querySelectorAll("nav[role='navigation'] a")
     for(const link of allLinks){ link.classList.remove(classActive)}
     e.delegateTarget.classList.add(classActive);
   });
+
+  swup.on('contentReplaced', () => setCursor());
 });

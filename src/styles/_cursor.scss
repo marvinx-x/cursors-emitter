@@ -1,0 +1,15 @@
+#cursor{
+  $lengthCursor : 4rem;
+  --opacity-cursor : .15;
+  width: $lengthCursor;
+  height: $lengthCursor;
+  border-radius: $lengthCursor;
+  margin-top: -($lengthCursor/2);
+  margin-left: -($lengthCursor/2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--color-primary);
+  opacity: var(--opacity-cursor);
+  pointer-events: none;
+}
