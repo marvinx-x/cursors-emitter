@@ -1,15 +1,42 @@
-#cursor{
-  $lengthCursor : 4rem;
-  --opacity-cursor : .15;
-  width: $lengthCursor;
-  height: $lengthCursor;
-  border-radius: $lengthCursor;
-  margin-top: -($lengthCursor/2);
-  margin-left: -($lengthCursor/2);
+@mixin cursors($length) {
+  width: $length;
+  height: $length;
+  border-radius: $length;
+  margin-top : -(calc($length / 2));
+  margin-left : -(calc($length / 2));
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
+}
+
+#cursor{
+  $lengthCursor : 4rem;
+  --opacity-cursor : .15;
+  @include cursors($lengthCursor);
   background-color: var(--color-primary);
   opacity: var(--opacity-cursor);
-  pointer-events: none;
+}
+
+#particles{
+  $lengthCursor : 30rem;
+  --opacity-cursor : .1;
+  @include cursors($lengthCursor);
+  opacity: var(--opacity-cursor);
+
+  &.particles-1{
+    background-color: purple;
+  }
+
+  &.particles-2{
+    background-color: yellow;
+  }
+
+  &.particles-3{
+    background-color: cyan;
+  }
+
+  &.particles-4{
+    background-color: teal;
+  }
 }

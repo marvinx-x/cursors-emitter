@@ -1,8 +1,11 @@
+"use strict"
+
 import Swup from 'swup';
 import SwupOverlayTheme from '@swup/overlay-theme';
-import { Cursor } from './scripts/cursor';
+import { Cursor, Particles } from './scripts/cursor';
 
 const classActive = 'active';
+const nav = document.querySelector('nav[role=navigation]');
 
 function isTouchDevice() {
   return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
@@ -18,6 +21,7 @@ window.addEventListener('load', (e) => {
   document.body.classList.remove('preload');
   if(isTouchDevice()){ document.body.classList.add('touch') }
   navLinksActive();
+
   const swup = new Swup({
     plugins: [new SwupOverlayTheme({
       color: getComputedStyle(document.body).getPropertyValue('--color-third'),
@@ -26,14 +30,25 @@ window.addEventListener('load', (e) => {
     })]
   });
 
+  let xStart, yStart;
+  const setCursors = (xStart, yStart) => {
+    new Cursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
+    new Particles("#particles", xStart, yStart, 0.2, 0.6, 1000);
+  }
 
-  const setCursor = () => new Cursor('#cursor');
-  setCursor();
+  setCursors(xStart, yStart);
+
   swup.on('clickLink', (e) => {
-    const allLinks = document.querySelectorAll("nav[role='navigation'] a")
+    const allLinks = nav.querySelectorAll('a');
     for(const link of allLinks){ link.classList.remove(classActive)}
     e.delegateTarget.classList.add(classActive);
+    xStart = e.clientX;
+    yStart = e.clientY;
   });
 
-  swup.on('contentReplaced', () => setCursor());
+  swup.on('contentReplaced', () => {
+    setCursors(xStart, yStart)
+  });
 });
+
+export { nav };

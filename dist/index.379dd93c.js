@@ -520,12 +520,17 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"hD4hw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "nav", ()=>nav
+);
 var _swup = require("swup");
 var _swupDefault = parcelHelpers.interopDefault(_swup);
 var _overlayTheme = require("@swup/overlay-theme");
 var _overlayThemeDefault = parcelHelpers.interopDefault(_overlayTheme);
 var _cursor = require("./scripts/cursor");
+"use strict";
 const classActive = 'active';
+const nav = document.querySelector('nav[role=navigation]');
 function isTouchDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
@@ -547,16 +552,22 @@ window.addEventListener('load', (e1)=>{
             })
         ]
     });
-    const setCursor = ()=>new _cursor.Cursor('#cursor')
-    ;
-    setCursor();
+    let xStart1, yStart1;
+    const setCursors = (xStart, yStart)=>{
+        new _cursor.Cursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
+        new _cursor.Particles("#particles", xStart, yStart, 0.2, 0.6, 1000);
+    };
+    setCursors(xStart1, yStart1);
     swup.on('clickLink', (e)=>{
-        const allLinks = document.querySelectorAll("nav[role='navigation'] a");
+        const allLinks = nav.querySelectorAll('a');
         for (const link of allLinks)link.classList.remove(classActive);
         e.delegateTarget.classList.add(classActive);
+        xStart1 = e.clientX;
+        yStart1 = e.clientY;
     });
-    swup.on('contentReplaced', ()=>setCursor()
-    );
+    swup.on('contentReplaced', ()=>{
+        setCursors(xStart1, yStart1);
+    });
 });
 
 },{"swup":"guAQY","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","@swup/overlay-theme":"5E6bI","./scripts/cursor":"aTDK2"}],"guAQY":[function(require,module,exports) {
@@ -1983,12 +1994,14 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Cursor", ()=>Cursor
 );
+parcelHelpers.export(exports, "Particles", ()=>Particles
+);
+var _index = require("./../index");
 class Cursor {
-    constructor(el){
+    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
         this.node = document.querySelector(el);
-        this.bounds = this.node.getBoundingClientRect();
-        this.xStart = window.innerWidth / 2;
-        this.yStart = window.innerHeight / 2;
+        this.xStart = xStart || this.getBoundsFirstLink().x;
+        this.yStart = yStart || this.getBoundsFirstLink().y;
         this.mouse = {
             x: this.xStart,
             y: this.yStart
@@ -2001,9 +2014,10 @@ class Cursor {
             x: null,
             y: null
         };
-        this.speed = 0.25;
-        this.maxSqueeze = 0.6;
-        this.accelerator = 1000;
+        this.speed = speed || 1;
+        this.maxSqueeze = maxSqueeze || 0;
+        this.accelerator = accelerator || 0;
+        this.node.style.transform = this.setTranslate();
         this.updateCoordinates = (e)=>{
             this.mouse.x = e.clientX;
             this.mouse.y = e.clientY;
@@ -2011,21 +2025,32 @@ class Cursor {
         window.addEventListener('mousemove', this.updateCoordinates);
         this.loop();
     }
+    getBoundsFirstLink() {
+        const firstLink = _index.nav.querySelector('li:first-of-type').getBoundingClientRect();
+        return {
+            y: firstLink.top + firstLink.height / 2,
+            x: firstLink.left + firstLink.width / 2
+        };
+    }
+    setTranslate() {
+        return `translate3d(${this.pos.x + 'px'},${this.pos.y + 'px'},0)`;
+    }
     loop() {
         this.diff.x = this.mouse.x - this.pos.x;
         this.diff.y = this.mouse.y - this.pos.y;
         this.pos.x += this.diff.x * this.speed;
         this.pos.y += this.diff.y * this.speed;
         this.squeeze = Math.min(Math.sqrt(Math.pow(this.diff.x, 2) + Math.pow(this.diff.y, 2)) / this.accelerator, this.maxSqueeze);
-        const translate = `translate3d(${this.pos.x + 'px'},${this.pos.y + 'px'},0)`;
         const scale = `scale(${1 + this.squeeze},${1 - this.squeeze})`;
         const rotate = `rotate(${Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI}deg)`;
-        this.node.style.transform = translate + rotate + scale;
+        this.node.style.transform = this.setTranslate() + rotate + scale;
         requestAnimationFrame(()=>this.loop()
         );
     }
 }
+class Particles extends Cursor {
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["j1F46","hD4hw"], "hD4hw", "parcelRequirecea7")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./../index":"hD4hw"}]},["j1F46","hD4hw"], "hD4hw", "parcelRequirecea7")
 
 //# sourceMappingURL=index.379dd93c.js.map
