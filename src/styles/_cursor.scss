@@ -1,42 +1,31 @@
-@mixin cursors($length) {
-  width: $length;
-  height: $length;
-  border-radius: $length;
-  margin-top : -(calc($length / 2));
-  margin-left : -(calc($length / 2));
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 #cursor{
   $lengthCursor : 4rem;
   --opacity-cursor : .15;
-  @include cursors($lengthCursor);
   background-color: var(--color-primary);
   opacity: var(--opacity-cursor);
+  border-radius: $lengthCursor;
+  width: $lengthCursor;
+  height: $lengthCursor;
+  margin-top : -(calc($lengthCursor / 2));
+  margin-left : -(calc($lengthCursor / 2));
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 #particles{
-  $lengthCursor : 30rem;
-  --opacity-cursor : .1;
-  @include cursors($lengthCursor);
-  opacity: var(--opacity-cursor);
+  outline: 1px solid green;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  pointer-events: none;
+  z-index: -1;
 
-  &.particles-1{
-    background-color: purple;
-  }
-
-  &.particles-2{
-    background-color: yellow;
-  }
-
-  &.particles-3{
-    background-color: cyan;
-  }
-
-  &.particles-4{
-    background-color: teal;
-  }
+  // circle{
+  //   transform-origin: center center;
+  // }
 }

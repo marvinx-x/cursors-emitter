@@ -2,7 +2,7 @@
 
 import Swup from 'swup';
 import SwupOverlayTheme from '@swup/overlay-theme';
-import { Cursor, Particles } from './scripts/cursor';
+import { TinyCursor, Particles } from './scripts/cursor';
 
 const classActive = 'active';
 const nav = document.querySelector('nav[role=navigation]');
@@ -32,8 +32,8 @@ window.addEventListener('load', (e) => {
 
   let xStart, yStart;
   const setCursors = (xStart, yStart) => {
-    new Cursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
-    new Particles("#particles", xStart, yStart, 0.2, 0.6, 1000);
+    const tiny = new TinyCursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
+    const particles = new Particles("#particles", xStart, yStart, 0.1, 0.6, 1000);
   }
 
   setCursors(xStart, yStart);
