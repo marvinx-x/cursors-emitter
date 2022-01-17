@@ -1,5 +1,31 @@
 import { nav } from './../index'
 
+export const paramParticles = {
+  particle1 : {
+    speed : 0.1,
+    maxSqueeze : 0.6,
+    accelerator : 1000,
+    color : "yellow"
+  },
+  particle2 : {
+    speed : 0.1,
+    maxSqueeze : 0.16,
+    accelerator : 1000,
+    color : "red"
+  },
+  particle3 : {
+    speed : 0.1,
+    maxSqueeze : 0.16,
+    accelerator : 1000,
+    color : "purple"
+  },
+  particle4 : {
+    speed : 0.1,
+    maxSqueeze : 0.16,
+    accelerator : 1000,
+    color : "teal"
+  }
+}
 class Cursors{
 
   constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
@@ -12,11 +38,12 @@ class Cursors{
     this.diff = { x : null, y : null };
     this.maxSqueeze = maxSqueeze || 0;
     this.accelerator = accelerator || 1;
-    this.updateCoordinates = (e) => {
-      this.mouse.x = e.clientX;
-      this.mouse.y = e.clientY;
-    }
-    window.addEventListener('mousemove', this.updateCoordinates);
+    window.addEventListener('mousemove', (e) => {this.updateCoordinates(e)});
+  }
+
+  updateCoordinates(e){
+    this.mouse.x = e.clientX;
+    this.mouse.y = e.clientY;
   }
 
   getBoundsFirstLink(){
@@ -55,11 +82,14 @@ export class TinyCursor extends Cursors{
 
 export class Particles extends Cursors{
 
-  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
+  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color){
     super(el, xStart, yStart, speed, maxSqueeze, accelerator);
     this.nbrParticles = 1;
     this.blur = 0;
+    this.color = color;
     this.drawCircles();
+    this.loop();
+    window.addEventListener('resize', (e) => { this.drawCircles()})
   }
 
   loop(){
@@ -72,7 +102,8 @@ export class Particles extends Cursors{
 
   drawCircles(){
     const idBlurParticles = "blur-particles";
-    const exceedSize = this.blur*3;
+    // const exceedSize = this.blur*3;
+    const exceedSize = 0;
 
     this.node.innerHTML =
     `<svg width=${window.innerWidth + exceedSize} height=${window.innerHeight + exceedSize}>
@@ -82,12 +113,11 @@ export class Particles extends Cursors{
         </filter>
       </defs>
         <g filter="url(#${idBlurParticles})">
-          ${Array(this.nbrParticles).fill().map((i) => `<circle cx="0" cy="0" r="100" fill="red"></circle>` ).join('')}
+          ${Array(this.nbrParticles).fill().map((i) => `<circle cx="0" cy="0" r="100" fill=${this.color}></circle>` ).join('')}
         </g>
       </svg>`;
 
     this.circle = this.node.querySelector('circle');
-    this.loop();
   }
 }
 

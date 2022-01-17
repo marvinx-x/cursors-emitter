@@ -2,7 +2,7 @@
 
 import Swup from 'swup';
 import SwupOverlayTheme from '@swup/overlay-theme';
-import { TinyCursor, Particles } from './scripts/cursor';
+import { paramParticles, TinyCursor, Particles } from './scripts/cursor';
 
 const classActive = 'active';
 const nav = document.querySelector('nav[role=navigation]');
@@ -31,23 +31,32 @@ window.addEventListener('load', (e) => {
   });
 
   let xStart, yStart;
-  const setCursors = (xStart, yStart) => {
-    const tiny = new TinyCursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
-    const particles = new Particles("#particles", xStart, yStart, 0.1, 0.6, 1000);
+
+
+  let index = 0;
+  const setParamsParticles = (elNumber) => Object.values(Object.values(paramParticles)[elNumber]);
+
+  const setCursors = (xStart, yStart, ...args) => {
+    new TinyCursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
+    new Particles( "#particles", xStart, yStart, ...args);
   }
 
-  setCursors(xStart, yStart);
+  setCursors(xStart, yStart, ...setParamsParticles(index));
 
   swup.on('clickLink', (e) => {
+    const currentLink = e.delegateTarget;
     const allLinks = nav.querySelectorAll('a');
+    const li = currentLink.parentNode;
+    const ul = li.parentNode;
     for(const link of allLinks){ link.classList.remove(classActive)}
-    e.delegateTarget.classList.add(classActive);
+    currentLink.classList.add(classActive);
     xStart = e.clientX;
     yStart = e.clientY;
+    index = Array.prototype.slice.call( ul.childNodes ).indexOf(li);
   });
 
-  swup.on('contentReplaced', () => {
-    setCursors(xStart, yStart)
+  swup.on('contentReplaced', (e) => {
+    setCursors(xStart, yStart, ...setParamsParticles(index))
   });
 });
 

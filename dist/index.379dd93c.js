@@ -553,20 +553,27 @@ window.addEventListener('load', (e1)=>{
         ]
     });
     let xStart1, yStart1;
-    const setCursors = (xStart, yStart)=>{
-        const tiny = new _cursor.TinyCursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
-        const particles = new _cursor.Particles("#particles", xStart, yStart, 0.1, 0.6, 1000);
+    let index = 0;
+    const setParamsParticles = (elNumber)=>Object.values(Object.values(_cursor.paramParticles)[elNumber])
+    ;
+    const setCursors = (xStart, yStart, ...args)=>{
+        new _cursor.TinyCursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
+        new _cursor.Particles("#particles", xStart, yStart, ...args);
     };
-    setCursors(xStart1, yStart1);
+    setCursors(xStart1, yStart1, ...setParamsParticles(index));
     swup.on('clickLink', (e)=>{
+        const currentLink = e.delegateTarget;
         const allLinks = nav.querySelectorAll('a');
+        const li = currentLink.parentNode;
+        const ul = li.parentNode;
         for (const link of allLinks)link.classList.remove(classActive);
-        e.delegateTarget.classList.add(classActive);
+        currentLink.classList.add(classActive);
         xStart1 = e.clientX;
         yStart1 = e.clientY;
+        index = Array.prototype.slice.call(ul.childNodes).indexOf(li);
     });
-    swup.on('contentReplaced', ()=>{
-        setCursors(xStart1, yStart1);
+    swup.on('contentReplaced', (e)=>{
+        setCursors(xStart1, yStart1, ...setParamsParticles(index));
     });
 });
 
@@ -1992,11 +1999,39 @@ exports.export = function(dest, destName, get) {
 },{}],"aTDK2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "paramParticles", ()=>paramParticles
+);
 parcelHelpers.export(exports, "TinyCursor", ()=>TinyCursor
 );
 parcelHelpers.export(exports, "Particles", ()=>Particles
 );
 var _index = require("./../index");
+const paramParticles = {
+    particle1: {
+        speed: 0.1,
+        maxSqueeze: 0.6,
+        accelerator: 1000,
+        color: "yellow"
+    },
+    particle2: {
+        speed: 0.1,
+        maxSqueeze: 0.16,
+        accelerator: 1000,
+        color: "red"
+    },
+    particle3: {
+        speed: 0.1,
+        maxSqueeze: 0.16,
+        accelerator: 1000,
+        color: "purple"
+    },
+    particle4: {
+        speed: 0.1,
+        maxSqueeze: 0.16,
+        accelerator: 1000,
+        color: "teal"
+    }
+};
 class Cursors {
     constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
         this.node = document.querySelector(el);
@@ -2017,11 +2052,13 @@ class Cursors {
         };
         this.maxSqueeze = maxSqueeze || 0;
         this.accelerator = accelerator || 1;
-        this.updateCoordinates = (e)=>{
-            this.mouse.x = e.clientX;
-            this.mouse.y = e.clientY;
-        };
-        window.addEventListener('mousemove', this.updateCoordinates);
+        window.addEventListener('mousemove', (e)=>{
+            this.updateCoordinates(e);
+        });
+    }
+    updateCoordinates(e) {
+        this.mouse.x = e.clientX;
+        this.mouse.y = e.clientY;
     }
     getBoundsFirstLink() {
         const firstLink = _index.nav.querySelector('li:first-of-type').getBoundingClientRect();
@@ -2054,11 +2091,16 @@ class TinyCursor extends Cursors {
     }
 }
 class Particles extends Cursors {
-    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
+    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color){
         super(el, xStart, yStart, speed, maxSqueeze, accelerator);
         this.nbrParticles = 1;
         this.blur = 0;
+        this.color = color;
         this.drawCircles();
+        this.loop();
+        window.addEventListener('resize', (e)=>{
+            this.drawCircles();
+        });
     }
     loop() {
         this.setParamsDiffs();
@@ -2070,7 +2112,8 @@ class Particles extends Cursors {
     }
     drawCircles() {
         const idBlurParticles = "blur-particles";
-        const exceedSize = this.blur * 3;
+        // const exceedSize = this.blur*3;
+        const exceedSize = 0;
         this.node.innerHTML = `<svg width=${window.innerWidth + exceedSize} height=${window.innerHeight + exceedSize}>
       <defs>
         <filter id=${idBlurParticles} x="-100%" y="-100%" width="${window.innerWidth / 2}%" height="${window.innerWidth / 2}%">
@@ -2078,12 +2121,11 @@ class Particles extends Cursors {
         </filter>
       </defs>
         <g filter="url(#${idBlurParticles})">
-          ${Array(this.nbrParticles).fill().map((i)=>`<circle cx="0" cy="0" r="100" fill="red"></circle>`
+          ${Array(this.nbrParticles).fill().map((i)=>`<circle cx="0" cy="0" r="100" fill=${this.color}></circle>`
         ).join('')}
         </g>
       </svg>`;
         this.circle = this.node.querySelector('circle');
-        this.loop();
     }
 }
 
