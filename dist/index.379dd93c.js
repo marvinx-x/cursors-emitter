@@ -520,29 +520,53 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"hD4hw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "nav", ()=>nav
-);
 var _swup = require("swup");
 var _swupDefault = parcelHelpers.interopDefault(_swup);
 var _overlayTheme = require("@swup/overlay-theme");
 var _overlayThemeDefault = parcelHelpers.interopDefault(_overlayTheme);
 var _cursor = require("./scripts/cursor");
 "use strict";
-const classActive = 'active';
-const nav = document.querySelector('nav[role=navigation]');
 function isTouchDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
-function navLinksActive() {
-    const pathNameMatch = window.location.pathname.match(/\d/);
-    const link = document.querySelector(`nav[role="navigation"] li:nth-of-type(${pathNameMatch === null ? 1 : pathNameMatch[0]}) a`);
-    link.classList.add(classActive);
-}
 window.addEventListener('load', (e1)=>{
-    document.body.classList.remove('preload');
+    /// add class 'touch' on touch devices
     if (isTouchDevice()) document.body.classList.add('touch');
-    navLinksActive();
+    const classActive = 'active';
+    const nav = document.querySelector('nav[role=navigation]');
+    /// get page index
+    const pathNameMatch = window.location.pathname.match(/\d/);
+    /// get currentLink when page load
+    const link1 = document.querySelector(`nav[role="navigation"] li:nth-of-type(${pathNameMatch === null ? 1 : pathNameMatch[0]}) a`);
+    let boundsLinks = link1.getBoundingClientRect();
+    /// get cursor position x at page load
+    let xStart1 = boundsLinks.left + boundsLinks.width / 2;
+    /// get cursor position y at page load
+    let yStart1 = boundsLinks.top + boundsLinks.height / 2;
+    /// get link index position in nav at page load
+    let index = 0;
+    const setIndexLink = (el)=>{
+        const li = el.parentNode;
+        const ul = li.parentNode;
+        return index = Array.prototype.slice.call(ul.childNodes).indexOf(li);
+    };
+    /// get values of paramsArticles object
+    const setParamsParticles = (elNumber)=>Object.values(Object.values(_cursor.paramParticles)[elNumber])
+    ;
+    /// init tiny cursor and particles
+    const setCursors = (xStart, yStart, ...args)=>{
+        new _cursor.TinyCursor('#cursor', xStart, yStart, Object.values(_cursor.paramParticles)[index].speed, 0.6, 1000);
+        new _cursor.Particles("#particles", xStart, yStart, ...args);
+    };
+    /// init events at start
+    const init = ()=>{
+        document.body.classList.remove('preload');
+        link1.classList.add(classActive);
+        setIndexLink(link1);
+        setCursors(xStart1, yStart1, ...setParamsParticles(index));
+    };
+    init();
+    /// init swup event for page transitions
     const swup = new _swupDefault.default({
         plugins: [
             new _overlayThemeDefault.default({
@@ -552,26 +576,17 @@ window.addEventListener('load', (e1)=>{
             })
         ]
     });
-    let xStart1, yStart1;
-    let index = 0;
-    const setParamsParticles = (elNumber)=>Object.values(Object.values(_cursor.paramParticles)[elNumber])
-    ;
-    const setCursors = (xStart, yStart, ...args)=>{
-        new _cursor.TinyCursor('#cursor', xStart, yStart, 0.1, 0.6, 1000);
-        new _cursor.Particles("#particles", xStart, yStart, ...args);
-    };
-    setCursors(xStart1, yStart1, ...setParamsParticles(index));
+    /// events on link click
     swup.on('clickLink', (e)=>{
         const currentLink = e.delegateTarget;
         const allLinks = nav.querySelectorAll('a');
-        const li = currentLink.parentNode;
-        const ul = li.parentNode;
         for (const link of allLinks)link.classList.remove(classActive);
         currentLink.classList.add(classActive);
         xStart1 = e.clientX;
         yStart1 = e.clientY;
-        index = Array.prototype.slice.call(ul.childNodes).indexOf(li);
+        setIndexLink(currentLink);
     });
+    /// events on content replaced
     swup.on('contentReplaced', (e)=>{
         setCursors(xStart1, yStart1, ...setParamsParticles(index));
     });
@@ -2005,39 +2020,70 @@ parcelHelpers.export(exports, "TinyCursor", ()=>TinyCursor
 );
 parcelHelpers.export(exports, "Particles", ()=>Particles
 );
-var _index = require("./../index");
 const paramParticles = {
     particle1: {
         speed: 0.1,
-        maxSqueeze: 0.6,
-        accelerator: 1000,
-        color: "yellow"
+        maxSqueeze: 0.9,
+        accelerator: 3000,
+        color: "green",
+        nbrParticles: 5,
+        radiusStart: 100,
+        radiusDiff: 10,
+        opacity: 0.1,
+        strokeColor: "black",
+        strokeWidth: 4,
+        blur: 0,
+        mixBlendMode: "unset"
     },
     particle2: {
-        speed: 0.1,
+        speed: 0.2,
         maxSqueeze: 0.16,
         accelerator: 1000,
-        color: "red"
+        color: "red",
+        nbrParticles: 10,
+        radiusStart: 10,
+        radiusDiff: 20,
+        opacity: 0.2,
+        strokeColor: "gray",
+        strokeWidth$: 1,
+        blur: 10,
+        mixBlendMode: "multiply"
     },
     particle3: {
-        speed: 0.1,
+        speed: 0.3,
         maxSqueeze: 0.16,
         accelerator: 1000,
-        color: "purple"
+        color: "purple",
+        nbrParticles: 2,
+        radiusStart: 200,
+        radiusDiff: 30,
+        opacity: 0.3,
+        strokeColor: "red",
+        strokeWidth$: 10,
+        blur: 100,
+        mixBlendMode: "screen"
     },
     particle4: {
-        speed: 0.1,
+        speed: 0.4,
         maxSqueeze: 0.16,
         accelerator: 1000,
-        color: "teal"
+        color: "teal",
+        nbrParticles: 6,
+        radiusStart: 30,
+        radiusDiff: 40,
+        opacity: 0.4,
+        strokeColor: "green",
+        strokeWidth$: 20,
+        blur: 200,
+        mixBlendMode: "saturation"
     }
 };
 class Cursors {
     constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
         this.node = document.querySelector(el);
         this.speed = speed || 1;
-        this.xStart = xStart || this.getBoundsFirstLink().x;
-        this.yStart = yStart || this.getBoundsFirstLink().y;
+        this.xStart = xStart;
+        this.yStart = yStart;
         this.mouse = {
             x: this.xStart,
             y: this.yStart
@@ -2059,13 +2105,6 @@ class Cursors {
     updateCoordinates(e) {
         this.mouse.x = e.clientX;
         this.mouse.y = e.clientY;
-    }
-    getBoundsFirstLink() {
-        const firstLink = _index.nav.querySelector('li:first-of-type').getBoundingClientRect();
-        return {
-            y: firstLink.top + firstLink.height / 2,
-            x: firstLink.left + firstLink.width / 2
-        };
     }
     setParamsDiffs() {
         this.diff.x = this.mouse.x - this.pos.x;
@@ -2091,11 +2130,17 @@ class TinyCursor extends Cursors {
     }
 }
 class Particles extends Cursors {
-    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color){
+    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, nbrParticles, radiusStart, radiusDiff, opacity, strokeColor, strokeWidth, blur, mixBlendMode){
         super(el, xStart, yStart, speed, maxSqueeze, accelerator);
-        this.nbrParticles = 1;
-        this.blur = 0;
+        this.nbrParticles = nbrParticles;
+        this.blur = blur;
         this.color = color;
+        this.radiusStart = radiusStart;
+        this.radiusDiff = radiusDiff;
+        this.opacity = opacity;
+        this.strokeColor = strokeColor;
+        this.strokeWidth = strokeWidth;
+        this.mixBlendMode = mixBlendMode;
         this.drawCircles();
         this.loop();
         window.addEventListener('resize', (e)=>{
@@ -2106,14 +2151,15 @@ class Particles extends Cursors {
         this.setParamsDiffs();
         this.translate = this.translate.replaceAll('px', '').replace(',', ' ');
         this.rotate = this.rotate.replace('deg', '');
-        this.circle.setAttribute('transform', this.translate + this.rotate + this.scale);
+        for (const circle of this.circles)circle.setAttribute('transform', this.translate + this.rotate + this.scale);
         requestAnimationFrame(()=>this.loop()
         );
     }
     drawCircles() {
         const idBlurParticles = "blur-particles";
-        // const exceedSize = this.blur*3;
-        const exceedSize = 0;
+        const exceedSize = this.blur * 3;
+        const radiusEach = (i)=>Math.abs(this.radiusStart - i * this.radiusDiff)
+        ;
         this.node.innerHTML = `<svg width=${window.innerWidth + exceedSize} height=${window.innerHeight + exceedSize}>
       <defs>
         <filter id=${idBlurParticles} x="-100%" y="-100%" width="${window.innerWidth / 2}%" height="${window.innerWidth / 2}%">
@@ -2121,14 +2167,14 @@ class Particles extends Cursors {
         </filter>
       </defs>
         <g filter="url(#${idBlurParticles})">
-          ${Array(this.nbrParticles).fill().map((i)=>`<circle cx="0" cy="0" r="100" fill=${this.color}></circle>`
+          ${Array(this.nbrParticles).fill().map((el, i)=>`<circle cx="0" cy="0" r=${radiusEach(i)} fill=${this.color} fill-opacity=${this.opacity * 100}% stroke=${this.strokeColor} stroke-width=${this.strokeWidth} style="mix-blend-mode:${this.mixBlendMode}"></circle> `
         ).join('')}
         </g>
       </svg>`;
-        this.circle = this.node.querySelector('circle');
+        this.circles = this.node.querySelectorAll('circle');
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./../index":"hD4hw"}]},["j1F46","hD4hw"], "hD4hw", "parcelRequirecea7")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["j1F46","hD4hw"], "hD4hw", "parcelRequirecea7")
 
 //# sourceMappingURL=index.379dd93c.js.map

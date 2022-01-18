@@ -1,29 +1,73 @@
-import { nav } from './../index'
+/* params Object Particles */
+/*  */
+/*
+speed : between > 0 and 1
+maxSqueeze : between > 0 and 1
+accelerator : average between 1000 and 2000
+radiusStart : radius of first circle (and decrement it by radiusDiff)
+radiusDiff : space between each circle
+/*  */
+/*  */
 
 export const paramParticles = {
   particle1 : {
     speed : 0.1,
-    maxSqueeze : 0.6,
-    accelerator : 1000,
-    color : "yellow"
+    maxSqueeze : 0.9,
+    accelerator : 3000,
+    color : "green",
+    nbrParticles : 5,
+    radiusStart : 100,
+    radiusDiff : 10,
+    opacity : 0.1,
+    strokeColor : "black",
+    strokeWidth : 4,
+    blur : 0,
+    mixBlendMode : "unset"
   },
+
   particle2 : {
-    speed : 0.1,
+    speed : 0.2,
     maxSqueeze : 0.16,
     accelerator : 1000,
-    color : "red"
+    color : "red",
+    nbrParticles : 10,
+    radiusStart : 10,
+    radiusDiff : 20,
+    opacity : 0.2,
+    strokeColor : "gray",
+    strokeWidth$ : 1,
+    blur : 10,
+    mixBlendMode : "multiply"
   },
+
   particle3 : {
-    speed : 0.1,
+    speed : 0.3,
     maxSqueeze : 0.16,
     accelerator : 1000,
-    color : "purple"
+    color : "purple",
+    nbrParticles : 2,
+    radiusStart : 200,
+    radiusDiff : 30,
+    opacity : 0.3,
+    strokeColor : "red",
+    strokeWidth$ : 10,
+    blur : 100,
+    mixBlendMode : "screen"
   },
+
   particle4 : {
-    speed : 0.1,
+    speed : 0.4,
     maxSqueeze : 0.16,
     accelerator : 1000,
-    color : "teal"
+    color : "teal",
+    nbrParticles : 6,
+    radiusStart : 30,
+    radiusDiff : 40,
+    opacity : 0.4,
+    strokeColor : "green",
+    strokeWidth$ : 20,
+    blur : 200,
+    mixBlendMode : "saturation"
   }
 }
 class Cursors{
@@ -31,8 +75,8 @@ class Cursors{
   constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
     this.node = document.querySelector(el);
     this.speed = speed || 1;
-    this.xStart = xStart || this.getBoundsFirstLink().x;
-    this.yStart = yStart || this.getBoundsFirstLink().y;
+    this.xStart = xStart;
+    this.yStart = yStart;
     this.mouse = { x : this.xStart, y : this.yStart };
     this.pos = { x : this.xStart, y : this.yStart };
     this.diff = { x : null, y : null };
@@ -44,14 +88,6 @@ class Cursors{
   updateCoordinates(e){
     this.mouse.x = e.clientX;
     this.mouse.y = e.clientY;
-  }
-
-  getBoundsFirstLink(){
-    const firstLink = nav.querySelector('li:first-of-type').getBoundingClientRect();
-    return {
-      y : firstLink.top + firstLink.height/2,
-      x : firstLink.left + firstLink.width/2
-    };
   }
 
   setParamsDiffs(){
@@ -82,11 +118,17 @@ export class TinyCursor extends Cursors{
 
 export class Particles extends Cursors{
 
-  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color){
+  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, nbrParticles, radiusStart, radiusDiff, opacity, strokeColor, strokeWidth, blur, mixBlendMode){
     super(el, xStart, yStart, speed, maxSqueeze, accelerator);
-    this.nbrParticles = 1;
-    this.blur = 0;
+    this.nbrParticles = nbrParticles;
+    this.blur = blur;
     this.color = color;
+    this.radiusStart = radiusStart;
+    this.radiusDiff = radiusDiff;
+    this.opacity = opacity;
+    this.strokeColor = strokeColor;
+    this.strokeWidth = strokeWidth;
+    this.mixBlendMode = mixBlendMode;
     this.drawCircles();
     this.loop();
     window.addEventListener('resize', (e) => { this.drawCircles()})
@@ -96,14 +138,14 @@ export class Particles extends Cursors{
     this.setParamsDiffs();
     this.translate = this.translate.replaceAll('px','').replace(',', ' ');
     this.rotate = this.rotate.replace('deg', '');
-    this.circle.setAttribute('transform', this.translate + this.rotate + this.scale);
+    for(const circle of this.circles){ circle.setAttribute('transform', this.translate + this.rotate + this.scale) }
     requestAnimationFrame(() => this.loop());
   }
 
   drawCircles(){
     const idBlurParticles = "blur-particles";
-    // const exceedSize = this.blur*3;
-    const exceedSize = 0;
+    const exceedSize = this.blur*3;
+    const radiusEach = (i) => Math.abs(this.radiusStart-(i*this.radiusDiff));
 
     this.node.innerHTML =
     `<svg width=${window.innerWidth + exceedSize} height=${window.innerHeight + exceedSize}>
@@ -113,11 +155,11 @@ export class Particles extends Cursors{
         </filter>
       </defs>
         <g filter="url(#${idBlurParticles})">
-          ${Array(this.nbrParticles).fill().map((i) => `<circle cx="0" cy="0" r="100" fill=${this.color}></circle>` ).join('')}
+          ${Array(this.nbrParticles).fill().map((el, i) => `<circle cx="0" cy="0" r=${radiusEach(i)} fill=${this.color} fill-opacity=${this.opacity*100}% stroke=${this.strokeColor} stroke-width=${this.strokeWidth} style="mix-blend-mode:${this.mixBlendMode}"></circle> ` ).join('') }
         </g>
       </svg>`;
 
-    this.circle = this.node.querySelector('circle');
+    this.circles = this.node.querySelectorAll('circle');
   }
 }
 
