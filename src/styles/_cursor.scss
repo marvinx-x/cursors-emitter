@@ -23,4 +23,11 @@
   transform: translate3d(-50%, -50%, 0);
   pointer-events: none;
   z-index: -1;
+
+  svg * {
+    transform-box: fill-box;
+    transform-origin: center center;
+  }
 }
+
+

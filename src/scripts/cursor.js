@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 /* params Object Particles */
 /*  */
 /*
@@ -12,17 +14,23 @@ radiusDiff : space between each circle
 export const paramParticles = {
   particle1 : {
     speed : 0.1,
-    maxSqueeze : 0.9,
-    accelerator : 3000,
+    maxSqueeze : 0.6,
+    accelerator : 1000,
     color : "green",
     nbrParticles : 5,
     radiusStart : 100,
     radiusDiff : 10,
-    opacity : 0.1,
+    opacity : 1,
     strokeColor : "black",
     strokeWidth : 4,
+    strokeOpacity : 1,
     blur : 0,
-    mixBlendMode : "unset"
+    mixBlendMode : "unset",
+    transitionParticles : {
+      delay : 0.1,
+      timingfunction : "linear"
+    },
+    sort : 'desc'
   },
 
   particle2 : {
@@ -35,7 +43,8 @@ export const paramParticles = {
     radiusDiff : 20,
     opacity : 0.2,
     strokeColor : "gray",
-    strokeWidth$ : 1,
+    strokeWidth : 1,
+    strokeOpacity : 1,
     blur : 10,
     mixBlendMode : "multiply"
   },
@@ -50,7 +59,8 @@ export const paramParticles = {
     radiusDiff : 30,
     opacity : 0.3,
     strokeColor : "red",
-    strokeWidth$ : 10,
+    strokeWidth : 10,
+    strokeOpacity : 1,
     blur : 100,
     mixBlendMode : "screen"
   },
@@ -65,7 +75,8 @@ export const paramParticles = {
     radiusDiff : 40,
     opacity : 0.4,
     strokeColor : "green",
-    strokeWidth$ : 20,
+    strokeWidth : 20,
+    strokeOpacity : 1,
     blur : 200,
     mixBlendMode : "saturation"
   }
@@ -74,14 +85,14 @@ class Cursors{
 
   constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
     this.node = document.querySelector(el);
-    this.speed = speed || 1;
+    this.speed = speed;
     this.xStart = xStart;
     this.yStart = yStart;
     this.mouse = { x : this.xStart, y : this.yStart };
     this.pos = { x : this.xStart, y : this.yStart };
     this.diff = { x : null, y : null };
-    this.maxSqueeze = maxSqueeze || 0;
-    this.accelerator = accelerator || 1;
+    this.maxSqueeze = maxSqueeze;
+    this.accelerator = accelerator;
     window.addEventListener('mousemove', (e) => {this.updateCoordinates(e)});
   }
 
@@ -90,7 +101,7 @@ class Cursors{
     this.mouse.y = e.clientY;
   }
 
-  setParamsDiffs(){
+  setParamsDiffs(speed){
     this.diff.x = this.mouse.x - this.pos.x;
     this.diff.y = this.mouse.y - this.pos.y;
     this.pos.x += this.diff.x * this.speed;
@@ -110,7 +121,7 @@ export class TinyCursor extends Cursors{
   }
 
   loop(){
-    this.setParamsDiffs();
+    this.setParamsDiffs('tiny cursor : ' + this.speed);
     this.node.style.transform = this.translate + this.rotate + this.scale;
     requestAnimationFrame(() => this.loop());
   }
@@ -118,7 +129,7 @@ export class TinyCursor extends Cursors{
 
 export class Particles extends Cursors{
 
-  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, nbrParticles, radiusStart, radiusDiff, opacity, strokeColor, strokeWidth, blur, mixBlendMode){
+  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, nbrParticles, radiusStart, radiusDiff, opacity, strokeColor, strokeWidth, strokeOpacity, blur, mixBlendMode, transitionParticles, sort){
     super(el, xStart, yStart, speed, maxSqueeze, accelerator);
     this.nbrParticles = nbrParticles;
     this.blur = blur;
@@ -128,38 +139,62 @@ export class Particles extends Cursors{
     this.opacity = opacity;
     this.strokeColor = strokeColor;
     this.strokeWidth = strokeWidth;
+    this.strokeOpacity = strokeOpacity;
     this.mixBlendMode = mixBlendMode;
+    this.transitionParticles = transitionParticles;
+    this.sort = sort;
     this.drawCircles();
     this.loop();
     window.addEventListener('resize', (e) => { this.drawCircles()})
   }
 
-  loop(){
-    this.setParamsDiffs();
-    this.translate = this.translate.replaceAll('px','').replace(',', ' ');
-    this.rotate = this.rotate.replace('deg', '');
-    for(const circle of this.circles){ circle.setAttribute('transform', this.translate + this.rotate + this.scale) }
-    requestAnimationFrame(() => this.loop());
-  }
-
   drawCircles(){
     const idBlurParticles = "blur-particles";
-    const exceedSize = this.blur*3;
-    const radiusEach = (i) => Math.abs(this.radiusStart-(i*this.radiusDiff));
-
     this.node.innerHTML =
-    `<svg width=${window.innerWidth + exceedSize} height=${window.innerHeight + exceedSize}>
-      <defs>
+    `<svg width=${window.innerWidth} height=${window.innerHeight}>
+      ${this.blur !== 0 ?
+      `<defs>
         <filter id=${idBlurParticles} x="-100%" y="-100%" width="${window.innerWidth/2}%" height="${window.innerWidth/2}%">
           <feGaussianBlur in="SourceGraphic" stdDeviation=${this.blur}></feGaussianBlur>
         </filter>
       </defs>
-        <g filter="url(#${idBlurParticles})">
-          ${Array(this.nbrParticles).fill().map((el, i) => `<circle cx="0" cy="0" r=${radiusEach(i)} fill=${this.color} fill-opacity=${this.opacity*100}% stroke=${this.strokeColor} stroke-width=${this.strokeWidth} style="mix-blend-mode:${this.mixBlendMode}"></circle> ` ).join('') }
-        </g>
-      </svg>`;
+      <g filter="url(#${idBlurParticles})">` :
+      '<g>' }
+        ${Array(this.nbrParticles).fill().map((el, i) => `<circle id=${i+1} cx=${this.pos.x} cy=${this.pos.y} r=${Math.abs(this.radiusStart-(i*this.radiusDiff))} fill=${this.color} fill-opacity=${this.opacity*100}% stroke=${this.strokeColor} stroke-width=${this.strokeWidth} stroke-opacity=${this.strokeOpacity} style="mix-blend-mode:${this.mixBlendMode}">
+        </circle> ` ).join('') }
+      </g>
+    </svg>`;
 
     this.circles = this.node.querySelectorAll('circle');
+    if(this.sort && this.sort === 'desc'){
+      this.sortCircles();
+    }
+  }
+
+  loop(){{}
+    this.setParamsDiffs();
+
+    for(const [i, circle] of this.circles.entries()){
+      if(this.maxSqueeze !== 0){
+        this.rotate = this.rotate.replace('deg', '');
+        circle.setAttribute('transform', this.rotate + this.scale)
+      }
+      if(this.transitionParticles){
+        circle.style.transitionProperty = "cx,cy"
+        circle.style.transitionDuration = `${this.transitionParticles.delay*i}s`;
+        circle.style.transitionTimingFunction = this.transitionParticles.timingfunction ;
+      }
+      circle.setAttribute('cx', this.pos.x);
+      circle.setAttribute('cy', this.pos.y);
+    }
+    requestAnimationFrame(() => this.loop());
+  }
+
+  sortCircles(){
+    const circlesD3 = d3.selectAll(this.circles);
+    const zOrders = circlesD3._groups[0].map((circle) => { return Number(circle.id) });
+    circlesD3.data(zOrders);
+    circlesD3.sort(d3.descending);
   }
 }
 

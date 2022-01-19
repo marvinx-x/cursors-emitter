@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@swup/overlay-theme": "^1.1.1",
+    "d3": "^7.3.0",
     "swup": "^2.0.14"
   }
 }
