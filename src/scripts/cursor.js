@@ -160,7 +160,7 @@ export class Particles extends Cursors{
       </defs>
       <g filter="url(#${idBlurParticles})">` :
       '<g>' }
-        ${Array(this.nbrParticles).fill().map((el, i) => `<circle id=${i+1} cx=${this.pos.x} cy=${this.pos.y} r=${Math.abs(this.radiusStart-(i*this.radiusDiff))} fill=${this.setColors(i, this.color)} fill-opacity=${this.opacity*100}% stroke=${this.setColors(i, this.strokeColor)} stroke-width=${this.strokeWidth} stroke-opacity=${this.strokeOpacity} style="mix-blend-mode:${this.mixBlendMode}">
+        ${Array(this.nbrParticles).fill().map((el, i) => `<circle id=${i+1} cx=${this.pos.x} cy=${this.pos.y} r=${Math.abs(this.radiusStart-(i*this.radiusDiff))} fill=${Array.isArray(this.color) ? this.color[i] : this.color} fill-opacity=${this.opacity*100}% stroke=${Array.isArray(this.strokeColor) ? this.strokeColor[i] : this.strokeColor} stroke-width=${this.strokeWidth} stroke-opacity=${this.strokeOpacity} style="mix-blend-mode:${this.mixBlendMode}">
         </circle> ` ).join('') }
       </g>
     </svg>`;
@@ -195,15 +195,6 @@ export class Particles extends Cursors{
     const zOrders = circlesD3._groups[0].map((circle) => { return Number(circle.id) });
     circlesD3.data(zOrders);
     circlesD3.sort(d3.descending);
-  }
-
-  setColors(i, elColors){
-    if(Array.isArray(elColors)){
-      return elColors[i];
-    }
-    else{
-      return elColors;
-    }
   }
 }
 
