@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { hexToRgb } from "..";
 // import { findDiagonal } from "..";
 
 /* params Object Particles */
@@ -19,8 +20,8 @@ export const paramParticles = {
       maxSqueeze : 0.6,
       accelerator : 1000,
       color : "#55828b",
-      size : 25,
-      opacity : 0.1
+      size : 30,
+      opacity : 0.25
     },
     particles : {
       maxSqueeze : 0,
@@ -34,14 +35,13 @@ export const paramParticles = {
       opacity : 1,
       strokeColor : "#55828b",
       strokeWidth : 1.25,
-      strokeOpacity : 0.25,
+      strokeOpacity : 0.35,
       blur : 0,
       mixBlendMode : "unset",
       transitionParticles : {
         delay : 0.01,
         timingfunction : "linear"
-      },
-      sort : "desc"
+      }
     }
   },
   cursor2 : {
@@ -151,15 +151,15 @@ class Cursors{
 
 export class TinyCursor extends Cursors{
 
-  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, size, opacity, shape = "circle") {
+  constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, size, opacity, borderWidth, borderColor, borderOpacity,  shape = "circle") {
     super(el, xStart, yStart, speed, maxSqueeze, accelerator);
     this.node.style.transform = this.translate;
-    this.node.style.backgroundColor = color;
+    this.node.style.backgroundColor = `rgba(${hexToRgb(color).r}, ${hexToRgb(color).g}, ${hexToRgb(color).b}, ${opacity})`;
     this.node.style.width = `${size}px`;
     this.node.style.height = `${size}px`;
     this.node.style.marginTop = `${-(size/2)}px`;
     this.node.style.marginLeft = `${-(size/2)}px`;
-    this.node.style.opacity = opacity;
+    borderWidth ? this.node.style.border = `${borderWidth}px solid rgba(${hexToRgb(borderColor).r},${hexToRgb(borderColor).g},${hexToRgb(borderColor).b},${borderOpacity})` : null;
     shape === "circle" ? this.node.style.borderRadius = `${size}px` : false;
     this.loop();
   }

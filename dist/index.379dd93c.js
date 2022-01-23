@@ -521,7 +521,9 @@ function hmrAcceptRun(bundle, id) {
 },{}],"hD4hw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "findDiagonal", ()=>findDiagonal
+/* UTILS */ parcelHelpers.export(exports, "findDiagonal", ()=>findDiagonal
+);
+parcelHelpers.export(exports, "hexToRgb", ()=>hexToRgb
 );
 var _swup = require("swup");
 var _swupDefault = parcelHelpers.interopDefault(_swup);
@@ -605,6 +607,14 @@ function findDiagonal() {
     const h = window.innerHeight;
     const d = Math.sqrt(w * w + h * h);
     return Math.ceil(d);
+}
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
 }
 
 },{"swup":"guAQY","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","@swup/overlay-theme":"5E6bI","./scripts/cursor":"aTDK2"}],"guAQY":[function(require,module,exports) {
@@ -2036,6 +2046,7 @@ parcelHelpers.export(exports, "TinyCursor", ()=>TinyCursor
 parcelHelpers.export(exports, "Particles", ()=>Particles
 );
 var _d3 = require("d3");
+var _ = require("..");
 const paramParticles = {
     cursor1: {
         speed: 0.1,
@@ -2043,8 +2054,8 @@ const paramParticles = {
             maxSqueeze: 0.6,
             accelerator: 1000,
             color: "#55828b",
-            size: 25,
-            opacity: 0.1
+            size: 30,
+            opacity: 0.25
         },
         particles: {
             maxSqueeze: 0,
@@ -2058,14 +2069,13 @@ const paramParticles = {
             opacity: 1,
             strokeColor: "#55828b",
             strokeWidth: 1.25,
-            strokeOpacity: 0.25,
+            strokeOpacity: 0.35,
             blur: 0,
             mixBlendMode: "unset",
             transitionParticles: {
                 delay: 0.01,
                 timingfunction: "linear"
-            },
-            sort: "desc"
+            }
         }
     },
     cursor2: {
@@ -2181,15 +2191,15 @@ class Cursors {
     }
 }
 class TinyCursor extends Cursors {
-    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, size, opacity, shape = "circle"){
+    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, size, opacity, borderWidth, borderColor, borderOpacity, shape = "circle"){
         super(el, xStart, yStart, speed, maxSqueeze, accelerator);
         this.node.style.transform = this.translate;
-        this.node.style.backgroundColor = color;
+        this.node.style.backgroundColor = `rgba(${_.hexToRgb(color).r}, ${_.hexToRgb(color).g}, ${_.hexToRgb(color).b}, ${opacity})`;
         this.node.style.width = `${size}px`;
         this.node.style.height = `${size}px`;
         this.node.style.marginTop = `${-(size / 2)}px`;
         this.node.style.marginLeft = `${-(size / 2)}px`;
-        this.node.style.opacity = opacity;
+        borderWidth && (this.node.style.border = `${borderWidth}px solid rgba(${_.hexToRgb(borderColor).r},${_.hexToRgb(borderColor).g},${_.hexToRgb(borderColor).b},${borderOpacity})`);
         shape === "circle" && (this.node.style.borderRadius = `${size}px`);
         this.loop();
     }
@@ -2275,7 +2285,7 @@ class Particles extends Cursors {
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","d3":"97vK6"}],"97vK6":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","d3":"97vK6","..":"hD4hw"}],"97vK6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _d3Array = require("d3-array");
