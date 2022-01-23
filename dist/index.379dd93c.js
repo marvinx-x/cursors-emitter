@@ -520,15 +520,15 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"hD4hw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "findDiagonal", ()=>findDiagonal
+);
 var _swup = require("swup");
 var _swupDefault = parcelHelpers.interopDefault(_swup);
 var _overlayTheme = require("@swup/overlay-theme");
 var _overlayThemeDefault = parcelHelpers.interopDefault(_overlayTheme);
 var _cursor = require("./scripts/cursor");
 "use strict";
-function isTouchDevice() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-}
 window.addEventListener('load', (e1)=>{
     /// add class 'touch' on touch devices
     if (isTouchDevice()) document.body.classList.add('touch');
@@ -551,19 +551,25 @@ window.addEventListener('load', (e1)=>{
         return index = Array.prototype.slice.call(ul.childNodes).indexOf(li);
     };
     /// get values of paramsArticles object
-    const setParamsParticles = (elNumber)=>Object.values(Object.values(_cursor.paramParticles)[elNumber])
+    const paramsValues = (i)=>Object.values(_cursor.paramParticles)[i]
+    ;
+    const setSpeed = (i)=>paramsValues(i).speed
+    ;
+    const setParamsCursor = (i)=>Object.values(paramsValues(i).cursor)
+    ;
+    const setParamsParticles = (i)=>Object.values(paramsValues(i).particles)
     ;
     /// init tiny cursor and particles
-    const setCursors = (xStart, yStart, ...args)=>{
-        new _cursor.TinyCursor('#cursor', xStart, yStart, Object.values(_cursor.paramParticles)[index].speed, 0.6, 1000);
-        new _cursor.Particles("#particles", xStart, yStart, ...args);
+    const setCursors = (xStart, yStart)=>{
+        new _cursor.TinyCursor('#cursor', xStart, yStart, setSpeed(index), ...setParamsCursor(index));
+        new _cursor.Particles("#particles", xStart, yStart, setSpeed(index), ...setParamsParticles(index));
     };
     /// init events at start
     const init = ()=>{
         document.body.classList.remove('preload');
         link1.classList.add(classActive);
         setIndexLink(link1);
-        setCursors(xStart1, yStart1, ...setParamsParticles(index));
+        setCursors(xStart1, yStart1);
     };
     init();
     /// init swup event for page transitions
@@ -588,9 +594,18 @@ window.addEventListener('load', (e1)=>{
     });
     /// events on content replaced
     swup.on('contentReplaced', (e)=>{
-        setCursors(xStart1, yStart1, ...setParamsParticles(index));
+        setCursors(xStart1, yStart1);
     });
 });
+function isTouchDevice() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+}
+function findDiagonal() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const d = Math.sqrt(w * w + h * h);
+    return Math.ceil(d);
+}
 
 },{"swup":"guAQY","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","@swup/overlay-theme":"5E6bI","./scripts/cursor":"aTDK2"}],"guAQY":[function(require,module,exports) {
 'use strict';
@@ -2022,80 +2037,107 @@ parcelHelpers.export(exports, "Particles", ()=>Particles
 );
 var _d3 = require("d3");
 const paramParticles = {
-    particle1: {
+    cursor1: {
         speed: 0.1,
-        maxSqueeze: 0.6,
-        accelerator: 1000,
-        color: [
-            "red",
-            "green",
-            "blue",
-            "yellow"
-        ],
-        nbrParticles: 5,
-        radiusStart: 100,
-        radiusDiff: 10,
-        opacity: 1,
-        strokeColor: [
-            "teal",
-            "pink",
-            "orange",
-            "purple"
-        ],
-        strokeWidth: 4,
-        strokeOpacity: 1,
-        blur: 0,
-        mixBlendMode: "unset",
-        transitionParticles: {
-            delay: 0.1,
-            timingfunction: "linear"
+        cursor: {
+            maxSqueeze: 0.6,
+            accelerator: 1000,
+            color: "#55828b",
+            size: 25,
+            opacity: 0.1
         },
-        sort: 'desc'
+        particles: {
+            maxSqueeze: 0,
+            accelerator: 0,
+            backgroundColor: "none",
+            color: "none",
+            nbrParticles: 270,
+            radiusStart: 50,
+            radiusDiff: 7,
+            direction: ">",
+            opacity: 1,
+            strokeColor: "#55828b",
+            strokeWidth: 1.25,
+            strokeOpacity: 0.25,
+            blur: 0,
+            mixBlendMode: "unset",
+            transitionParticles: {
+                delay: 0.01,
+                timingfunction: "linear"
+            },
+            sort: "desc"
+        }
     },
-    particle2: {
-        speed: 0.2,
-        maxSqueeze: 0.16,
-        accelerator: 1000,
-        color: "red",
-        nbrParticles: 10,
-        radiusStart: 10,
-        radiusDiff: 20,
-        opacity: 0.2,
-        strokeColor: "gray",
-        strokeWidth: 1,
-        strokeOpacity: 1,
-        blur: 10,
-        mixBlendMode: "multiply"
+    cursor2: {
+        speed: 0.1,
+        cursor: {
+            maxSqueeze: 0.6,
+            accelerator: 1000,
+            color: "#B298DC",
+            size: 25,
+            opacity: 0.1
+        },
+        particles: {
+            maxSqueeze: 0,
+            accelerator: 0,
+            backgroundColor: "none",
+            color: "none",
+            nbrParticles: 270,
+            radiusStart: 50,
+            radiusDiff: 7,
+            direction: ">",
+            opacity: 1,
+            strokeColor: "#B298DC",
+            strokeWidth: 1.25,
+            strokeOpacity: 0.25,
+            blur: 0,
+            mixBlendMode: "unset",
+            transitionParticles: {
+                delay: 0.01,
+                timingfunction: "linear"
+            },
+            sort: "desc"
+        }
     },
-    particle3: {
+    cursor3: {
         speed: 0.3,
-        maxSqueeze: 0.16,
-        accelerator: 1000,
-        color: "purple",
-        nbrParticles: 2,
-        radiusStart: 200,
-        radiusDiff: 30,
-        opacity: 0.3,
-        strokeColor: "red",
-        strokeWidth: 10,
-        strokeOpacity: 1,
-        blur: 100,
-        mixBlendMode: "screen"
+        cursor: {
+            color: "blue"
+        },
+        particles: {
+            maxSqueeze: 0.16,
+            accelerator: 1000,
+            color: "purple",
+            nbrParticles: 2,
+            radiusStart: 200,
+            radiusDiff: 30,
+            opacity: 0.3,
+            strokeColor: "red",
+            strokeWidth: 10,
+            strokeOpacity: 1,
+            blur: 100,
+            mixBlendMode: "screen"
+        }
     },
-    particle4: {
+    cursor4: {
         speed: 0.4,
-        maxSqueeze: 0.16,
-        accelerator: 1000,
-        color: "teal",
-        nbrParticles: 6,
-        radiusStart: 30,
-        radiusDiff: 40,
-        opacity: 0.4,
-        strokeColor: "green",
-        strokeWidth: 20,
-        strokeOpacity: 1,
-        blur: 200,
-        mixBlendMode: "saturation"
+        cursor: {
+            color: "yellow"
+        },
+        particles: {
+            maxSqueeze: 0.16,
+            accelerator: 1000,
+            color: "teal",
+            nbrParticles: 6,
+            radiusStart: 30,
+            radiusDiff: 40,
+            opacity: 0.4,
+            strokeColor: "green",
+            strokeWidth: 20,
+            strokeOpacity: 1,
+            blur: 200,
+            mixBlendMode: "saturation"
+        }
     }
 };
 class Cursors {
@@ -2112,6 +2154,7 @@ class Cursors {
             x: this.xStart,
             y: this.yStart
         };
+        this.translate = `translate(${this.pos.x + 'px'},${this.pos.y + 'px'})`;
         this.diff = {
             x: null,
             y: null
@@ -2126,7 +2169,7 @@ class Cursors {
         this.mouse.x = e.clientX;
         this.mouse.y = e.clientY;
     }
-    setParamsDiffs(speed) {
+    setParamsDiffs() {
         this.diff.x = this.mouse.x - this.pos.x;
         this.diff.y = this.mouse.y - this.pos.y;
         this.pos.x += this.diff.x * this.speed;
@@ -2138,8 +2181,16 @@ class Cursors {
     }
 }
 class TinyCursor extends Cursors {
-    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator){
+    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, size, opacity, shape = "circle"){
         super(el, xStart, yStart, speed, maxSqueeze, accelerator);
+        this.node.style.transform = this.translate;
+        this.node.style.backgroundColor = color;
+        this.node.style.width = `${size}px`;
+        this.node.style.height = `${size}px`;
+        this.node.style.marginTop = `${-(size / 2)}px`;
+        this.node.style.marginLeft = `${-(size / 2)}px`;
+        this.node.style.opacity = opacity;
+        shape === "circle" && (this.node.style.borderRadius = `${size}px`);
         this.loop();
     }
     loop() {
@@ -2150,13 +2201,15 @@ class TinyCursor extends Cursors {
     }
 }
 class Particles extends Cursors {
-    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, color, nbrParticles, radiusStart, radiusDiff, opacity, strokeColor, strokeWidth, strokeOpacity, blur, mixBlendMode, transitionParticles, sort){
+    constructor(el, xStart, yStart, speed, maxSqueeze, accelerator, backgroundColor, color, nbrParticles, radiusStart, radiusDiff, direction, opacity, strokeColor, strokeWidth, strokeOpacity, blur, mixBlendMode, transitionParticles, sort){
         super(el, xStart, yStart, speed, maxSqueeze, accelerator);
         this.nbrParticles = nbrParticles;
         this.blur = blur;
+        this.backgroundColor = backgroundColor;
         this.color = color;
         this.radiusStart = radiusStart;
         this.radiusDiff = radiusDiff;
+        this.direction = direction;
         this.opacity = opacity;
         this.strokeColor = strokeColor;
         this.strokeWidth = strokeWidth;
@@ -2172,14 +2225,21 @@ class Particles extends Cursors {
     }
     drawCircles() {
         const idBlurParticles = "blur-particles";
-        this.node.innerHTML = `<svg width=${window.innerWidth} height=${window.innerHeight}>
+        const setRadius = (i)=>{
+            let radius;
+            if (this.direction && this.direction === ">") radius = this.radiusStart + i * this.radiusDiff;
+            else radius = this.radiusStart - i * this.radiusDiff;
+            radius > 0 || (radius = 0);
+            return radius;
+        };
+        this.node.innerHTML = `<svg width=${window.innerWidth} height=${window.innerHeight} style="background-color:${this.backgroundColor};">
       ${this.blur !== 0 ? `<defs>
         <filter id=${idBlurParticles} x="-100%" y="-100%" width="${window.innerWidth / 2}%" height="${window.innerWidth / 2}%">
           <feGaussianBlur in="SourceGraphic" stdDeviation=${this.blur}></feGaussianBlur>
         </filter>
       </defs>
       <g filter="url(#${idBlurParticles})">` : '<g>'}
-        ${Array(this.nbrParticles).fill().map((el, i)=>`<circle id=${i + 1} cx=${this.pos.x} cy=${this.pos.y} r=${Math.abs(this.radiusStart - i * this.radiusDiff)} fill=${Array.isArray(this.color) ? this.color[i] : this.color} fill-opacity=${this.opacity * 100}% stroke=${Array.isArray(this.strokeColor) ? this.strokeColor[i] : this.strokeColor} stroke-width=${this.strokeWidth} stroke-opacity=${this.strokeOpacity} style="mix-blend-mode:${this.mixBlendMode}">
+        ${Array(this.nbrParticles).fill().map((el, i)=>`<circle id=${i + 1} cx=${this.pos.x} cy=${this.pos.y} r=${setRadius(i)} fill=${Array.isArray(this.color) ? this.color[i] : this.color} fill-opacity=${this.opacity * 100}% stroke=${Array.isArray(this.strokeColor) ? this.strokeColor[i] : this.strokeColor} stroke-width=${this.strokeWidth} stroke-opacity=${this.strokeOpacity} style="mix-blend-mode:${this.mixBlendMode}">
         </circle> `
         ).join('')}
       </g>

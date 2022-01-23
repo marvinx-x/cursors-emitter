@@ -4,10 +4,6 @@ import Swup from 'swup';
 import SwupOverlayTheme from '@swup/overlay-theme';
 import { paramParticles, TinyCursor, Particles } from './scripts/cursor';
 
-function isTouchDevice() {
-  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
-}
-
 window.addEventListener('load', (e) => {
   /// add class 'touch' on touch devices
   if(isTouchDevice()){ document.body.classList.add('touch') }
@@ -32,12 +28,15 @@ window.addEventListener('load', (e) => {
   }
 
   /// get values of paramsArticles object
-  const setParamsParticles = (elNumber) => Object.values(Object.values(paramParticles)[elNumber]);
+  const paramsValues = (i) => Object.values(paramParticles)[i];
+  const setSpeed = (i) => paramsValues(i).speed;
+  const setParamsCursor = (i) => Object.values(paramsValues(i).cursor);
+  const setParamsParticles = (i) => Object.values(paramsValues(i).particles);
 
   /// init tiny cursor and particles
-  const setCursors = (xStart, yStart, ...args) => {
-    new TinyCursor('#cursor', xStart, yStart, Object.values(paramParticles)[index].speed, 0.6, 1000);
-    new Particles( "#particles", xStart, yStart, ...args);
+  const setCursors = (xStart, yStart) => {
+    new TinyCursor('#cursor', xStart, yStart, setSpeed(index), ...setParamsCursor(index));
+    new Particles( "#particles", xStart, yStart, setSpeed(index), ...setParamsParticles(index));
   }
 
   /// init events at start
@@ -45,7 +44,7 @@ window.addEventListener('load', (e) => {
     document.body.classList.remove('preload');
     link.classList.add(classActive);
     setIndexLink(link);
-    setCursors(xStart, yStart, ...setParamsParticles(index));
+    setCursors(xStart, yStart);
   }
   init();
 
@@ -71,7 +70,18 @@ window.addEventListener('load', (e) => {
 
   /// events on content replaced
   swup.on('contentReplaced', (e) => {
-    setCursors(xStart, yStart, ...setParamsParticles(index))
+    setCursors(xStart, yStart)
   });
 });
+
+function isTouchDevice() {
+  return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+}
+
+export function findDiagonal() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const d = Math.sqrt(w*w + h*h);
+  return Math.ceil(d);
+}
 
