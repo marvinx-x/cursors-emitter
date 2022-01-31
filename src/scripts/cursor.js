@@ -195,7 +195,7 @@ export class TinyCursor extends Cursors{
   }
 
   loop(){
-    this.setParamsDiffs('tiny cursor : ' + this.speed);
+    this.setParamsDiffs();
     this.node.style.transform = this.translate + this.rotate + this.scale;
     requestAnimationFrame(() => this.loop());
   }
