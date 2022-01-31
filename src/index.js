@@ -79,14 +79,12 @@ function isTouchDevice() {
 }
 
 /* UTILS */
-
 export function findDiagonal() {
   const w = window.innerWidth;
   const h = window.innerHeight;
   const d = Math.sqrt(w*w + h*h);
   return Math.ceil(d);
 }
-
 
 export function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

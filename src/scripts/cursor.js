@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { hexToRgb } from "..";
-// import { findDiagonal } from "..";
+import { findDiagonal } from "..";
 
 /* params Object Particles */
 /*  */
@@ -8,111 +8,141 @@ import { hexToRgb } from "..";
 speed : between > 0 and 1
 maxSqueeze : between > 0 and 1
 accelerator : average between 1000 and 2000
-radiusStart : radius of first circle (and decrement it by radiusDiff)
+radiusStart : radius of first circle (and decrement or increment it by radiusDiff width key "direction")
 radiusDiff : space between each circle
+direction : ">" or "<",
+duration and delay : in ms
 /*  */
 /*  */
 
 export const paramParticles = {
   cursor1 : {
-    speed : 0.1,
+    speed : 0.2,
     cursor :{
       maxSqueeze : 0.6,
       accelerator : 1000,
-      color : "#55828b",
+      color : "#BCE3D3",
       size : 30,
-      opacity : 0.25
+      opacity : 1
     },
     particles : {
       maxSqueeze : 0,
       accelerator : 0,
       backgroundColor : "none",
       color : "none",
-      nbrParticles : 270,
+      nbrParticles : 250,
       radiusStart : 50,
       radiusDiff : 7,
       direction : ">",
       opacity : 1,
-      strokeColor : "#55828b",
+      strokeColor : "#BCE3D3",
       strokeWidth : 1.25,
-      strokeOpacity : 0.35,
+      strokeOpacity : 1,
       blur : 0,
       mixBlendMode : "unset",
       transitionParticles : {
-        delay : 0.01,
+        duration : 18,
+        delay : 6,
         timingfunction : "linear"
-      }
+      },
     }
   },
+
   cursor2 : {
+    speed : 0.2,
+    cursor :{
+      maxSqueeze : 0.1,
+      accelerator : 2000,
+      color : "#ffffff",
+      size : 50,
+      opacity : 0,
+      borderWidth : 2,
+      borderColor : "#ffffff",
+      borderOpacity : .8
+    },
+    particles : {
+      maxSqueeze : 0.1,
+      accelerator : 2000,
+      backgroundColor : "#ffffff",
+      color : ["#fbf8cc", "#fde4cf", "#ffcfd2", "#f1c0e8", "#cfbaf0", "#a3c4f3", "#90dbf4", "#8eecf5", "#98f5e1", "#b9fbc0"],
+      nbrParticles : 10,
+      radiusStart : 400,
+      radiusDiff : 20,
+      direction : "<",
+      opacity : 1,
+      strokeColor : "none",
+      strokeWidth : 0,
+      strokeOpacity : 0,
+      blur : 80,
+      mixBlendMode : "darken",
+      transitionParticles : {
+        duration : 40,
+        delay : 50,
+        timingfunction : "ease-out"
+      },
+    }
+  },
+  cursor3 : {
     speed : 0.1,
     cursor :{
-      maxSqueeze : 0.6,
+      maxSqueeze : 0.3,
       accelerator : 1000,
-      color : "#B298DC",
-      size : 25,
-      opacity : 0.1
+      color : "#364958",
+      size : 50,
+      opacity : 0.15
     },
     particles : {
       maxSqueeze : 0,
       accelerator : 0,
       backgroundColor : "none",
       color : "none",
-      nbrParticles : 270,
-      radiusStart : 50,
-      radiusDiff : 7,
-      direction : ">",
+      nbrParticles : 160,
+      radiusStart : findDiagonal()/3,
+      radiusDiff : 1,
+      direction : "<",
       opacity : 1,
-      strokeColor : "#B298DC",
-      strokeWidth : 1.25,
-      strokeOpacity : 0.25,
+      strokeColor : "#BBE8F0",
+      strokeWidth : 1,
+      strokeOpacity : .25,
       blur : 0,
       mixBlendMode : "unset",
       transitionParticles : {
-        delay : 0.01,
+        duration : 18,
+        delay : 1,
         timingfunction : "linear"
       },
       sort : "desc"
     }
   },
-  cursor3 : {
-    speed : 0.3,
-    cursor : {
-      color : "blue"
-    },
-    particles : {
-      maxSqueeze : 0.16,
-      accelerator : 1000,
-      color : "purple",
-      nbrParticles : 2,
-      radiusStart : 200,
-      radiusDiff : 30,
-      opacity : 0.3,
-      strokeColor : "red",
-      strokeWidth : 10,
-      strokeOpacity : 1,
-      blur : 100,
-      mixBlendMode : "screen"
-    }
-  },
   cursor4 : {
-    speed : 0.4,
-    cursor : {
-      color : "yellow"
+    speed : 0.2,
+    cursor :{
+      maxSqueeze : 0.3,
+      accelerator : 1000,
+      color : "#001813",
+      size : 40,
+      opacity : .05
     },
     particles : {
-      maxSqueeze : 0.16,
-      accelerator : 1000,
-      color : "teal",
-      nbrParticles : 6,
-      radiusStart : 30,
-      radiusDiff : 40,
-      opacity : 0.4,
-      strokeColor : "green",
-      strokeWidth : 20,
-      strokeOpacity : 1,
-      blur : 200,
-      mixBlendMode : "saturation"
+      maxSqueeze : 0.3,
+      accelerator : 6000,
+      backgroundColor : "#001813",
+      color : ["#184e77", "#1e6091", "#1a759f", "#168aad", "#34a0a4", "#52b69a", "#76c893", "#99d98c", "#b5e48c", "#d9ed92"],
+      nbrParticles : 10,
+      radiusStart : 250,
+      radiusDiff : 5,
+      direction : ">",
+      opacity : .9,
+      strokeColor : "none",
+      strokeWidth : 0,
+      strokeOpacity : 0,
+      blur : 30,
+      mixBlendMode : "screen",
+      transitionParticles : {
+        duration : 50,
+        delay : 4,
+        timingfunction : "ease-in-out"
+      },
     }
   }
 }
@@ -231,12 +261,11 @@ export class Particles extends Cursors{
     this.setParamsDiffs();
     for(const [i, circle] of this.circles.entries()){
       if(this.maxSqueeze !== 0){
-        this.rotate = this.rotate.replace('deg', '');
-        circle.setAttribute('transform', this.rotate + this.scale)
+        circle.style.transform = this.rotate + this.scale;
       }
       if(this.transitionParticles){
         circle.style.transitionProperty = "cx,cy"
-        circle.style.transitionDuration = `${this.transitionParticles.delay*i}s`;
+        circle.style.transitionDuration = `${this.transitionParticles.duration + i*this.transitionParticles.delay}ms `;
         circle.style.transitionTimingFunction = this.transitionParticles.timingfunction ;
       }
       circle.setAttribute('cx', this.pos.x);

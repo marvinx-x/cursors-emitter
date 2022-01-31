@@ -1,9 +1,8 @@
 /* VARS */
-
 :root{
   --color-primary : #364958;
   --color-secondary : #55828b;
-  --color-third : #c9e4ca;
+  --color-third : #BCE3D3;
   --white : #ffffff;
   font-size: 62.5%;
   /* FONT */
@@ -95,6 +94,7 @@ h1{
     left: 0;
     transition : transform 2s ease;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
     &:first-of-type{
       path{
@@ -175,7 +175,6 @@ nav[role=navigation]{
   }
 }
 
-
 @media screen and (max-width: 600px){
 
   header[role=banner]{
@@ -190,7 +189,6 @@ nav[role=navigation]{
     }
   }
 }
-
 
 /*  */
 /* APP */
@@ -273,9 +271,7 @@ footer[role=contentinfo]{
   }
 }
 
-
 /* CURSOR */
-
 #cursor{
   position: fixed;
   top: 0;
@@ -284,7 +280,6 @@ footer[role=contentinfo]{
 }
 
 /* PARTICLES */
-
 #particles{
   width: 100vw;
   height: 100vh;
