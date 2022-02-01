@@ -139,8 +139,8 @@ export const paramParticles = {
       blur : 30,
       mixBlendMode : "screen",
       transitionParticles : {
-        duration : 50,
-        delay : 4,
+        duration : 20,
+        delay : 3,
         timingfunction : "ease-in-out"
       },
     }
