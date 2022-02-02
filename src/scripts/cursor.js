@@ -30,7 +30,7 @@ export const paramParticles = {
       accelerator : 0,
       backgroundColor : "none",
       color : "none",
-      nbrParticles : 250,
+      nbrParticles : 370,
       radiusStart : 50,
       radiusDiff : 7,
       direction : ">",
