@@ -2,19 +2,6 @@ import * as d3 from "d3";
 import { hexToRgb } from "..";
 import { findDiagonal } from "..";
 
-/* params Object Particles */
-/*  */
-/*
-speed : between > 0 and 1
-maxSqueeze : between > 0 and 1
-accelerator : average between 1000 and 2000
-radiusStart : radius of first circle (and decrement or increment it by radiusDiff width key "direction")
-radiusDiff : space between each circle
-direction : ">" or "<",
-duration and delay : in ms
-/*  */
-/*  */
-
 export const paramParticles = {
   cursor1 : {
     speed : 0.2,
