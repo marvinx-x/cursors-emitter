@@ -194,7 +194,6 @@ export class Particles extends Cursors{
     super(el, xStart, yStart, speed, maxSqueeze, accelerator);
     this.nbrParticles = nbrParticles;
     this.blur = blur;
-    this.backgroundColor = backgroundColor;
     this.color = color;
     this.radiusStart = radiusStart;
     this.radiusDiff = radiusDiff;
@@ -208,7 +207,8 @@ export class Particles extends Cursors{
     this.sort = sort;
     this.drawCircles();
     this.loop();
-    window.addEventListener('resize', (e) => { this.drawCircles()})
+    window.addEventListener('resize', (e) => { this.drawCircles()});
+    document.body.style.backgroundColor = backgroundColor;
   }
 
   drawCircles(){
@@ -224,7 +224,7 @@ export class Particles extends Cursors{
     }
 
     this.node.innerHTML =
-    `<svg width=${window.innerWidth} height=${window.innerHeight} style="background-color:${this.backgroundColor};">
+    `<svg width=${window.innerWidth} height=${window.innerHeight}>
       ${this.blur !== 0 ?
       `<defs>
         <filter id=${idBlurParticles} x="-100%" y="-100%" width="${window.innerWidth/2}%" height="${window.innerWidth/2}%">
@@ -237,6 +237,7 @@ export class Particles extends Cursors{
         </circle> ` ).join('') }
       </g>
     </svg>`;
+
 
     this.circles = this.node.querySelectorAll('circle');
     if(this.sort && this.sort === 'desc'){

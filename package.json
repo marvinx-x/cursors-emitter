@@ -5,7 +5,7 @@
   "source": "src/index.pug",
   "scripts": {
     "start": "parcel src/index.pug",
-    "build": "parcel build src/index.pug"
+    "build": "parcel build src/index.pug --public-url ./"
   },
   "repository": {
     "type": "git",
