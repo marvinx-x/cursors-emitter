@@ -15,7 +15,7 @@ export const paramParticles = {
     particles : {
       maxSqueeze : 0,
       accelerator : 0,
-      backgroundColor : "none",
+      backgroundColor : "#ffffff",
       color : "none",
       nbrParticles : 370,
       radiusStart : 50,
@@ -74,14 +74,14 @@ export const paramParticles = {
     cursor :{
       maxSqueeze : 0.3,
       accelerator : 1000,
-      color : "#364958",
+      color : "#ffffff",
       size : 50,
       opacity : 0.15
     },
     particles : {
       maxSqueeze : 0,
       accelerator : 0,
-      backgroundColor : "none",
+      backgroundColor : "#001813",
       color : "none",
       nbrParticles : 160,
       radiusStart : findDiagonal()/3,

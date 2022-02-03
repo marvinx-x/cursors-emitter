@@ -20,7 +20,7 @@ window.addEventListener('load', (e) => {
   /// get cursor position y at page load
   let yStart = boundsLinks.top + boundsLinks.height/2;
   /// get link index position in nav at page load
-  let index = 0;
+  let index = 2;
   const setIndexLink = (el) => {
     const li = el.parentNode;
     const ul = li.parentNode;
@@ -48,14 +48,16 @@ window.addEventListener('load', (e) => {
   }
   init();
 
-  /// init swup event for page transitions
-  const swup = new Swup({
-    plugins: [new SwupOverlayTheme({
-      color: getComputedStyle(document.body).getPropertyValue('--color-third'),
-      duration: 1000,
-      direction: 'to-right',
+  const options = {
+    linkSelector : `a[href^="/index"], a[href^="index"]`,
+    plugins: [
+      new SwupOverlayTheme({
+      color: getComputedStyle(document.body).getPropertyValue('--color-third')
     })]
-  });
+  };
+
+  /// init swup event for page transitions
+  const swup = new Swup(options);
 
   /// events on link click
   swup.on('clickLink', (e) => {
@@ -70,7 +72,15 @@ window.addEventListener('load', (e) => {
 
   /// events on content replaced
   swup.on('contentReplaced', (e) => {
-    setCursors(xStart, yStart)
+    setCursors(xStart, yStart);
+  });
+
+  swup.on('transitionStart', (e) => {
+    document.body.style.pointerEvents = 'none';
+  });
+
+   swup.on('transitionEnd', (e) => {
+    document.body.style.pointerEvents = 'auto';
   });
 });
 
