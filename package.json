@@ -19,13 +19,15 @@
   },
   "homepage": "https://gitlab.com/marvinx-x/cursors-emitter#readme",
   "devDependencies": {
-    "@parcel/transformer-pug": "^2.1.1",
-    "@parcel/transformer-sass": "^2.1.1",
-    "parcel": "^2.1.1"
+    "@parcel/transformer-pug": "^2.6.2",
+    "@parcel/transformer-sass": "^2.6.2",
+    "parcel": "^2.1.1",
+    "process": "^0.11.10"
   },
   "dependencies": {
     "@swup/overlay-theme": "^1.1.1",
     "d3": "^7.3.0",
+    "detect-browser": "^5.3.0",
     "swup": "^2.0.14"
   }
 }
