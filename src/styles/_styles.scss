@@ -3,7 +3,7 @@
   --color-primary : #364958;
   --color-secondary : #55828b;
   --color-third : #BCE3D3;
-  --color-dark : #142014;
+  --color-dark : #001813;
   --white : #ffffff;
   font-size: 62.5%;
   /* FONT */
@@ -23,9 +23,6 @@
   box-sizing: border-box;
 }
 
-// .preload * {
-//   transition: none !important;
-// }
 
 html, body{
   overflow: hidden;
@@ -198,7 +195,7 @@ main[role=main]{
   display: flex;
   align-items: center;
   justify-content: center;
-  // cursor: none;
+  cursor: none;
 }
 
 .cursor-container{
@@ -254,53 +251,3 @@ footer[role=contentinfo]{
     }
   }
 }
-
-/*  */
-/*  CANNOT USE */
-/*  */
-// #cannot-use{
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: var(--color-secondary);
-//   align-items: center;
-//   justify-content: center;
-//   color : var(--white);
-//   font-weight: 600;
-//   display: none;
-//   padding: var(--padding-global);
-//   text-align: center;
-// }
-
-// .touch{
-//   #cannot-use{
-//     display: flex;
-//   }
-// }
-
-/* CURSOR */
-// #cursor{
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   pointer-events: none;
-// }
-
-// /* PARTICLES */
-// #particles{
-//   width: 100vw;
-//   height: 100vh;
-//   position: fixed;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate3d(-50%, -50%, 0);
-//   pointer-events: none;
-//   z-index: -1;
-
-//   svg * {
-//     transform-box: fill-box;
-//     transform-origin: center center;
-//   }
-// }

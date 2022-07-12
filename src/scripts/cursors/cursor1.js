@@ -1,11 +1,10 @@
-
+import { isTouchDevices } from "./../utils";
 import { Cursors } from "./../cursors";
-
 export class Cursor1 extends Cursors{
 
   constructor(index) {
     super(index);
-    this.speed = 0.5;
+    this.speed = !isTouchDevices ? 0.5 : 0.9;
     this.setParamsCursor();
     this.setParamsParticles();
     this.drawCursor();
@@ -29,12 +28,6 @@ export class Cursor1 extends Cursors{
       delay: 6,
       easing : "linear"
     };
-  }
-
-  diagonalWindow() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    return Math.ceil(Math.sqrt(this.width*this.width + this.height*this.height));
   }
 }
 

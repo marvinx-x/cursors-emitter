@@ -99,7 +99,7 @@ export class Cursors{
         particle.setAttribute('cx',this.pos.x )
         particle.setAttribute('cy',this.pos.y);
         particle.style.transitionProperty = "cx,cy"
-        particle.style.transitionDuration = `${this.transitionParticles.duration + i*this.transitionParticles.delay}ms `;
+        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
         particle.style.transitionTimingFunction = this.transitionParticles.easing;
       }
       else {
@@ -125,6 +125,12 @@ export class Cursors{
       this.radius = this.radiusStart+(i*this.radiusDiff);}
     this.radius > 0 ? this.radius = this.radius : this.radius = 0;
     return this.radius;
+  }
+
+  diagonalWindow() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    return Math.ceil(Math.sqrt(this.width*this.width + this.height*this.height));
   }
 }
 
