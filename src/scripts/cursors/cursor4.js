@@ -5,7 +5,6 @@ export class Cursor4 extends Cursors{
 
   constructor(index) {
     super(index);
-    this.backColor = "center / cover no-repeat url(https://maltemacademy.com/wp-content/uploads/2019/10/Definition-Front-End-Developpeur.jpg)"
     this.speed = 0.2;
     this.setParamsCursor();
     this.setParamsParticles();
@@ -20,14 +19,32 @@ export class Cursor4 extends Cursors{
   }
 
   setParamsParticles() {
-    this.nbrParticles = 10;
+    this.nbrParticles = 1;
     this.radiusStart = 200;
     this.radiusDiff = 20;
-    this.fillParticles = "red";
-    // this.fillOpacityParticles = 0.5;
-    // this.strokeColorParticles = "black";
-    // this.strokeWidthParticles = 4;
-    // this.strokeOpacityParticles = 1;
+    this.idMask = "maskGradient"
+    this.fillParticles = `url('#${this.idMask}')`;
+    this.maskCursor = {
+      image1: "https://picsum.photos/200/300?grayscale&blur=2",
+      image2: "https://picsum.photos/200/300"
+    };
+  }
+
+  drawMaskCursor() {
+    return `<defs>
+      <radialGradient id="${this.idMask}">
+        <stop offset="50%" stop-color="#fff"/>
+        <stop offset="100%" stop-color="#000"/>
+      </radialGradient>
+      <mask id="theMask">${this.drawParticles()}</mask>
+    </defs>
+    <image xlink:href=${this.maskCursor.image1} width="${this.widthContainer}" height="${this.heightContainer}" />
+    <g id="maskReveal" mask="url(#theMask)" >
+      <image xlink:href=${this.maskCursor.image2} width="${this.widthContainer}" height="${this.heightContainer}"  />
+    </g>`
   }
 }
+
+
+
 

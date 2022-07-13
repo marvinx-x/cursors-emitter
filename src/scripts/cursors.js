@@ -42,40 +42,10 @@ export class Cursors{
         viewbox="0 0 ${this.widthContainer} ${this.heightContainer}"
         style="background:${this.backColor || "none"}; cursor:${this.cursor ? "default" : "none"};">
 
-        ${this.gradientParticles ? `<defs>
-          <linearGradient id="gradient">
-            <stop offset="0%"  stop-color="${this.gradientParticles.color1}" />
-            <stop offset="100%" stop-color="${this.gradientParticles.color2}" />
-          </linearGradient>
-        </defs>` : ''}
+        ${this.gradientParticles ? this.drawGradient() : ''}
+        ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
+        ${this.drawTinyCursor()}
 
-        <g class="particles">
-          ${Array(this.nbrParticles).fill().map((_,i) =>
-            `<circle
-              r="${this.setRadiusParticles(i)}"
-              cx=${this.pos.x} cy=${this.pos.y}
-              fill="${this.fillParticles || "none"}"
-              fill-opacity="${this.fillOpacityParticles || 1}"
-              stroke="${this.strokeColorParticles || "none"}"
-              stroke-width="${this.strokeWidthParticles || 0}"
-              stroke-opacity="${this.strokeOpacityParticles || 1}"
-              id="${i + 1}">
-            </circle>`).join('')}
-        </g>
-
-        ${this.tinyCursor ? `<g class="tiny-cursor">
-          <circle
-            r=${this.radiusCursor || 10}
-            cx=${this.pos.x}
-            cy=${this.pos.y}
-            fill="${this.fillCursor || "none"}"
-            fill-opacity="${this.fillOpacityCursor || 1}"
-            stroke="${this.strokeColorCursor || "none"}"
-            stroke-width="${this.strokeWidthCursor || 0}"
-            stroke-opacity="${this.strokeOpacityCursor || 1}"
-            style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
-          </circle>
-        </g>` : ''}
     </svg>`;
 
     this.tinyCursor ? this.nodeCursor = this.container.querySelector('.tiny-cursor circle') : null;
@@ -84,6 +54,44 @@ export class Cursors{
     !this.transitionParticles ? this.points = Array(this.nbrParticles).fill().map((el,i) => this.pos) : null;
     this.loop();
   }
+
+
+
+
+  drawParticles() {
+    return `<g class="particles">
+      ${Array(this.nbrParticles).fill().map((_,i) =>
+        `<circle
+          r="${this.setRadiusParticles(i)}"
+          cx=${this.pos.x} cy=${this.pos.y}
+          fill="${this.fillParticles || "none"}"
+          fill-opacity="${this.fillOpacityParticles || 1}"
+          stroke="${this.strokeColorParticles || "none"}"
+          stroke-width="${this.strokeWidthParticles || 0}"
+          stroke-opacity="${this.strokeOpacityParticles || 1}"
+          id="${i + 1}">
+        </circle>`).join('')}
+    </g>`
+  }
+
+  drawTinyCursor() {
+    return `${this.tinyCursor ?
+      `<g class="tiny-cursor">
+        <circle
+          r=${this.radiusCursor || 10}
+          cx=${this.pos.x}
+          cy=${this.pos.y}
+          fill="${this.fillCursor || "none"}"
+          fill-opacity="${this.fillOpacityCursor || 1}"
+          stroke="${this.strokeColorCursor || "none"}"
+          stroke-width="${this.strokeWidthCursor || 0}"
+          stroke-opacity="${this.strokeOpacityCursor || 1}"
+          style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
+        </circle>
+    </g>` : ''}`
+  }
+
+
 
   setParticles() {
     this.particles = Array.from(this.nodesParticles);

@@ -17,11 +17,21 @@ export class Cursor2 extends Cursors{
     this.nbrParticles = 150;
     this.radiusStart = this.diagonalWindow()/10;
     this.radiusDiff = 0;
-    this.fillParticles = "url('#gradient')";
+    this.idGradient = "gradient"
+    this.fillParticles = `url('#${this.idGradient}')`;
     this.gradientParticles = {
       color1: "#BCE3D3",
       color2: "#55828b"
     };
+  }
+
+  drawGradient() {
+    return `<defs>
+      <linearGradient id=${this.idGradient}>
+        <stop offset="0%"  stop-color="${this.gradientParticles.color1}" />
+        <stop offset="100%" stop-color="${this.gradientParticles.color2}" />
+      </linearGradient>
+    </defs>`
   }
 }
 
