@@ -15,6 +15,7 @@ export class Cursors{
     this.diff = { x: null,y: null };
     this.tinyCursor = true;
     this.transitionParticles = false;
+    this.cursor = false;
     this.activeLinks();
     this.mousemoveCursor();
     window.addEventListener('resize',() => {
@@ -35,13 +36,18 @@ export class Cursors{
     this.heightContainer = window.innerHeight;
 
     this.container.innerHTML =
-      `<svg width="${this.widthContainer}" height="${this.heightContainer}" viewbox="0 0 ${this.widthContainer} ${this.heightContainer}" style="background:${this.backColor || "none"}">
-        <defs>
-          <linearGradient id="test">
-            <stop offset="0%"  stop-color="#BCE3D3"/>
-            <stop offset="100%" stop-color="#55828b"/>
+      `<svg
+        width="${this.widthContainer}"
+        height="${this.heightContainer}"
+        viewbox="0 0 ${this.widthContainer} ${this.heightContainer}"
+        style="background:${this.backColor || "none"}; cursor:${this.cursor ? "default" : "none"};">
+
+        ${this.gradientParticles ? `<defs>
+          <linearGradient id="gradient">
+            <stop offset="0%"  stop-color="${this.gradientParticles.color1}" />
+            <stop offset="100%" stop-color="${this.gradientParticles.color2}" />
           </linearGradient>
-        </defs>
+        </defs>` : ''}
 
         <g class="particles">
           ${Array(this.nbrParticles).fill().map((_,i) =>
@@ -75,9 +81,32 @@ export class Cursors{
     this.tinyCursor ? this.nodeCursor = this.container.querySelector('.tiny-cursor circle') : null;
     this.nodesParticles = this.container.querySelectorAll('.particles circle');
     this.sorting === "desc" ? this.sortParticles() : null;
-    // !this.transitionParticles ? this.points = Array(this.nbrParticles).fill().map((el,i) => this.mouse) : null;
-    this.points = Array(this.nbrParticles).fill().map((el,i) => this.pos);
+    !this.transitionParticles ? this.points = Array(this.nbrParticles).fill().map((el,i) => this.pos) : null;
     this.loop();
+  }
+
+  setParticles() {
+    this.particles = Array.from(this.nodesParticles);
+
+    for (const [i,particle] of this.particles.entries()) {
+
+      if (this.transitionParticles) {
+        particle.setAttribute('cx',this.pos.x )
+        particle.setAttribute('cy',this.pos.y);
+        particle.style.transitionProperty = "cx,cy"
+        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
+        particle.style.transitionTimingFunction = this.transitionParticles.easing;
+      }
+      else {
+        this.points[i] = this.points[i + 1];
+        this.points[this.points.length - 1] = { x: this.pos.x,y: this.pos.y };
+        particle.setAttribute('cx', this.points[i].x);
+        particle.setAttribute('cy',this.points[i].y);
+        this.rotate = `rotate(${ Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI }deg)`;
+        particle.style.transformOrigin = `${this.points[i].x}px ${this.points[i].y}px`;
+        particle.style.transform = this.rotate;
+      }
+    }
   }
 
   mousemoveCursor() {
@@ -143,101 +172,4 @@ export class Cursors{
     this.height = window.innerHeight;
     return Math.ceil(Math.sqrt(this.width*this.width + this.height*this.height));
   }
-
-
-  setParticles() {
-    this.particles = Array.from(this.nodesParticles);
-
-    for (const [i,particle] of this.particles.entries()) {
-      if (this.transitionParticles) {
-        particle.setAttribute('cx',this.pos.x )
-        particle.setAttribute('cy',this.pos.y);
-        particle.style.transitionProperty = "cx,cy"
-        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
-        particle.style.transitionTimingFunction = this.transitionParticles.easing;
-      }
-      else {
-        this.points[i] = this.points[i + 1];
-        this.points[this.points.length - 1] = { x: this.pos.x , y: this.pos.y };
-        particle.setAttribute('cx', this.points[i].x);
-        particle.setAttribute('cy',this.points[i].y);
-        // this.rotate = `rotate(${ Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI }deg)`;
-        // particle.style.transformOrigin = `${this.points[i].x}px ${this.points[i].y}px`;
-        // particle.style.transform = this.rotate;
-      }
-    }
-  }
 }
-
-
-
-
-
-// // dots is an array of Dot objects,
-// // mouse is an object used to track the X and Y position
-//    // of the mouse, set with a mousemove event listener below
-//    var dots = [],
-//    mouse = {
-//      x: 0,
-//      y: 0
-//    };
-
-// // The Dot object used to scaffold the dots
-// var Dot = function() {
-//  this.x = 0;
-//  this.y = 0;
-//  this.node = (function(){
-//    var n = document.createElement("div");
-//    n.className = "trail";
-//    document.body.appendChild(n);
-//    return n;
-//  }());
-// };
-// // The Dot.prototype.draw() method sets the position of
-//  // the object's <div> node
-// Dot.prototype.draw = function() {
-//  this.node.style.left = this.x + "px";
-//  this.node.style.top = this.y + "px";
-// };
-
-// // Creates the Dot objects, populates the dots array
-// for (var i = 0; i < 12; i++) {
-//  var d = new Dot();
-//  dots.push(d);
-// }
-
-// // This is the screen redraw function
-// function draw() {
-//  // Make sure the mouse position is set everytime
-//    // draw() is called.
-//  var x = mouse.x,
-//      y = mouse.y;
-
-//  // This loop is where all the 90s magic happens
-//  dots.forEach(function(dot, index, dots) {
-//    var nextDot = dots[index + 1] || dots[0];
-
-//    dot.x = x;
-//    dot.y = y;
-//    dot.draw();
-//    x += (nextDot.x - dot.x) * .6;
-//    y += (nextDot.y - dot.y) * .6;
-
-//  });
-// }
-
-// addEventListener("mousemove", function(event) {
-//  //event.preventDefault();
-//  mouse.x = event.pageX;
-//  mouse.y = event.pageY;
-// });
-
-// // animate() calls draw() then recursively calls itself
-//  // everytime the screen repaints via requestAnimationFrame().
-// function animate() {
-//  draw();
-//  requestAnimationFrame(animate);
-// }
-
-// // And get it started by calling animate().
-// animate();

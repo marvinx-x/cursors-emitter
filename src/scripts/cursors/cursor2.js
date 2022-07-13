@@ -5,8 +5,9 @@ export class Cursor2 extends Cursors{
 
   constructor(index) {
     super(index);
-    this.speed = 0.01;
+    this.speed = 0.011;
     this.tinyCursor = false;
+    this.cursor = true;
     this.backColor = "none";
     this.setParamsParticles();
     this.drawCursor();
@@ -14,22 +15,13 @@ export class Cursor2 extends Cursors{
 
   setParamsParticles() {
     this.nbrParticles = 150;
-    this.radiusStart = 200;
+    this.radiusStart = this.diagonalWindow()/10;
     this.radiusDiff = 0;
-    this.fillParticles = "url('#test')";
-
-    // this.sorting = "desc";
-
-    // this.transitionParticles = {
-    //   duration: 1,
-    //   delay: 1,
-    //   easing : "linear"
-    // };
-    // this.fillOpacityParticles = 0.1;
-    // this.strokeColorParticles = "black";
-    // this.strokeWidthParticles = 1;
-    // this.strokeOpacityParticles = 1;
-
+    this.fillParticles = "url('#gradient')";
+    this.gradientParticles = {
+      color1: "#BCE3D3",
+      color2: "#55828b"
+    };
   }
 }
 
