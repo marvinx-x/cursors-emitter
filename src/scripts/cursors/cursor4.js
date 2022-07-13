@@ -16,15 +16,15 @@ export class Cursor4 extends Cursors{
     this.maxSqueeze = 0.5;
     this.accelerator = 1000;
     this.radiusCursor = 300;
-    this.colorCursor = "white";
+    this.fillCursor = "white";
   }
 
   setParamsParticles() {
     this.nbrParticles = 20;
     this.radiusStart = 50;
     this.radiusDiff = 50;
-    this.colorParticles = "red";
-    this.opacityParticles = 0.5;
+    this.fillParticles = "red";
+    this.fillOpacityParticles = 0.5;
     this.strokeColorParticles = "black";
     this.strokeWidthParticles = 4;
     this.strokeOpacityParticles = 1;

@@ -15,13 +15,13 @@ export class Cursor3 extends Cursors{
 
   setParamsCursor() {
     this.radiusCursor = 30;
-    this.colorCursor = getComputedStyle(document.body).getPropertyValue('--color-third');
+    this.fillCursor = getComputedStyle(document.body).getPropertyValue('--color-third');
     this.maxSqueeze = 0.1;
     this.accelerator = 1000;
   }
 
   setParamsParticles() {
-    this.colorParticles = "none";
+    this.fillParticles = "none";
     this.strokeWidthParticles = 1;
     this.strokeOpacityParticles = .1;
     this.nbrParticles = 120;

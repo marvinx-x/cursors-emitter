@@ -36,19 +36,47 @@ export class Cursors{
 
     this.container.innerHTML =
       `<svg width="${this.widthContainer}" height="${this.heightContainer}" viewbox="0 0 ${this.widthContainer} ${this.heightContainer}" style="background:${this.backColor || "none"}">
+        <defs>
+          <linearGradient id="test">
+            <stop offset="0%"  stop-color="#BCE3D3"/>
+            <stop offset="100%" stop-color="#55828b"/>
+          </linearGradient>
+        </defs>
+
         <g class="particles">
           ${Array(this.nbrParticles).fill().map((_,i) =>
-            `<circle r="${this.setRadiusParticles(i)}" cx=${this.pos.x} cy=${this.pos.y} fill="${this.colorParticles || "none"}" fill-opacity="${this.opacityParticles || 1}" stroke="${this.strokeColorParticles || "none"}" stroke-width="${this.strokeWidthParticles || 0}" stroke-opacity="${this.strokeOpacityParticles || 1}" id="${i+1}"></circle>`).join('')}
+            `<circle
+              r="${this.setRadiusParticles(i)}"
+              cx=${this.pos.x} cy=${this.pos.y}
+              fill="${this.fillParticles || "none"}"
+              fill-opacity="${this.fillOpacityParticles || 1}"
+              stroke="${this.strokeColorParticles || "none"}"
+              stroke-width="${this.strokeWidthParticles || 0}"
+              stroke-opacity="${this.strokeOpacityParticles || 1}"
+              id="${i + 1}">
+            </circle>`).join('')}
         </g>
+
         ${this.tinyCursor ? `<g class="tiny-cursor">
-          <circle r=${this.radiusCursor || 10} cx=${this.pos.x} cy=${this.pos.y} style="transform-origin: ${this.pos.x}px ${this.pos.y}px" fill="${this.colorCursor || "none"}" fill-opacity="${this.opacityCursor || 1}" stroke="${this.strokeColorCursor || "none"}" stroke-width="${this.strokeWidthCursor || 0}" stroke-opacity="${this.strokeOpacityCursor || 1}"></circle>
+          <circle
+            r=${this.radiusCursor || 10}
+            cx=${this.pos.x}
+            cy=${this.pos.y}
+            fill="${this.fillCursor || "none"}"
+            fill-opacity="${this.fillOpacityCursor || 1}"
+            stroke="${this.strokeColorCursor || "none"}"
+            stroke-width="${this.strokeWidthCursor || 0}"
+            stroke-opacity="${this.strokeOpacityCursor || 1}"
+            style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
+          </circle>
         </g>` : ''}
     </svg>`;
 
     this.tinyCursor ? this.nodeCursor = this.container.querySelector('.tiny-cursor circle') : null;
     this.nodesParticles = this.container.querySelectorAll('.particles circle');
-    !this.transitionParticles ? this.points = Array(this.nbrParticles).fill().map((el,i) => this.mouse) : null;
     this.sorting === "desc" ? this.sortParticles() : null;
+    // !this.transitionParticles ? this.points = Array(this.nbrParticles).fill().map((el,i) => this.mouse) : null;
+    this.points = Array(this.nbrParticles).fill().map((el,i) => this.pos);
     this.loop();
   }
 
@@ -93,23 +121,6 @@ export class Cursors{
     this.nodeCursor.style.transform = this.rotate + this.scale;
   }
 
-  setParticles() {
-    for (const [i,particle] of this.nodesParticles.entries()) {
-      if (this.transitionParticles) {
-        particle.setAttribute('cx',this.pos.x )
-        particle.setAttribute('cy',this.pos.y);
-        particle.style.transitionProperty = "cx,cy"
-        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
-        particle.style.transitionTimingFunction = this.transitionParticles.easing;
-      }
-      else {
-        this.points[i] = this.points[i + 1];
-        this.points[this.points.length - 1] = { x: this.pos.x,y: this.pos.y };
-        particle.setAttribute('cx',this.points[i].x )
-        particle.setAttribute('cy',this.points[i].y);
-      }
-    }
-  }
 
   sortParticles(){
     this.particlesD3 = d3.selectAll(this.nodesParticles);
@@ -132,9 +143,101 @@ export class Cursors{
     this.height = window.innerHeight;
     return Math.ceil(Math.sqrt(this.width*this.width + this.height*this.height));
   }
+
+
+  setParticles() {
+    this.particles = Array.from(this.nodesParticles);
+
+    for (const [i,particle] of this.particles.entries()) {
+      if (this.transitionParticles) {
+        particle.setAttribute('cx',this.pos.x )
+        particle.setAttribute('cy',this.pos.y);
+        particle.style.transitionProperty = "cx,cy"
+        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
+        particle.style.transitionTimingFunction = this.transitionParticles.easing;
+      }
+      else {
+        this.points[i] = this.points[i + 1];
+        this.points[this.points.length - 1] = { x: this.pos.x , y: this.pos.y };
+        particle.setAttribute('cx', this.points[i].x);
+        particle.setAttribute('cy',this.points[i].y);
+        // this.rotate = `rotate(${ Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI }deg)`;
+        // particle.style.transformOrigin = `${this.points[i].x}px ${this.points[i].y}px`;
+        // particle.style.transform = this.rotate;
+      }
+    }
+  }
 }
 
 
 
 
 
+// // dots is an array of Dot objects,
+// // mouse is an object used to track the X and Y position
+//    // of the mouse, set with a mousemove event listener below
+//    var dots = [],
+//    mouse = {
+//      x: 0,
+//      y: 0
+//    };
+
+// // The Dot object used to scaffold the dots
+// var Dot = function() {
+//  this.x = 0;
+//  this.y = 0;
+//  this.node = (function(){
+//    var n = document.createElement("div");
+//    n.className = "trail";
+//    document.body.appendChild(n);
+//    return n;
+//  }());
+// };
+// // The Dot.prototype.draw() method sets the position of
+//  // the object's <div> node
+// Dot.prototype.draw = function() {
+//  this.node.style.left = this.x + "px";
+//  this.node.style.top = this.y + "px";
+// };
+
+// // Creates the Dot objects, populates the dots array
+// for (var i = 0; i < 12; i++) {
+//  var d = new Dot();
+//  dots.push(d);
+// }
+
+// // This is the screen redraw function
+// function draw() {
+//  // Make sure the mouse position is set everytime
+//    // draw() is called.
+//  var x = mouse.x,
+//      y = mouse.y;
+
+//  // This loop is where all the 90s magic happens
+//  dots.forEach(function(dot, index, dots) {
+//    var nextDot = dots[index + 1] || dots[0];
+
+//    dot.x = x;
+//    dot.y = y;
+//    dot.draw();
+//    x += (nextDot.x - dot.x) * .6;
+//    y += (nextDot.y - dot.y) * .6;
+
+//  });
+// }
+
+// addEventListener("mousemove", function(event) {
+//  //event.preventDefault();
+//  mouse.x = event.pageX;
+//  mouse.y = event.pageY;
+// });
+
+// // animate() calls draw() then recursively calls itself
+//  // everytime the screen repaints via requestAnimationFrame().
+// function animate() {
+//  draw();
+//  requestAnimationFrame(animate);
+// }
+
+// // And get it started by calling animate().
+// animate();

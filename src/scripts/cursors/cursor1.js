@@ -12,19 +12,19 @@ export class Cursor1 extends Cursors{
 
   setParamsCursor() {
     this.radiusCursor = 15;
-    this.colorCursor = getComputedStyle(document.body).getPropertyValue('--color-third');
+    this.fillCursor = getComputedStyle(document.body).getPropertyValue('--color-third');
     this.maxSqueeze = 0.6;
     this.accelerator = 1000;
   }
 
   setParamsParticles() {
-    this.strokeWidthParticles = 1.25;
+    this.strokeWidthParticles = 1;
     this.strokeColorParticles = getComputedStyle(document.body).getPropertyValue('--color-third');
     this.radiusStart = this.radiusCursor*3;
     this.radiusDiff = 7;
     this.nbrParticles = Math.round((this.diagonalWindow() + this.radiusDiff - this.radiusStart) / this.radiusDiff);
     this.transitionParticles = {
-      duration: 1,
+      duration: 18,
       delay: 6,
       easing : "linear"
     };
