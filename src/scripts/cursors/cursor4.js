@@ -28,6 +28,11 @@ export class Cursor4 extends Cursors{
       image1: "https://picsum.photos/200/300?grayscale&blur=2",
       image2: "https://picsum.photos/200/300"
     };
+    this.transitionParticles = {
+      duration: 18,
+      delay: 6,
+      easing : "linear"
+    };
   }
 
   drawMaskCursor() {

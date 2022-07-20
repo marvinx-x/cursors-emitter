@@ -18,103 +18,7 @@ export class Cursors{
     this.cursor = false;
     this.activeLinks();
     this.mousemoveCursor();
-    window.addEventListener('resize',() => {
-      this.setParamsCursor();
-      this.setParamsParticles();
-      this.drawCursor();
-    });
-  }
-
-  activeLinks() {
-    this.activeClass = 'active';
-    for (const link of this.links) { link.classList.remove(this.activeClass) };
-    this.link.classList.add(this.activeClass);
-  }
-
-  drawCursor() {
-    this.widthContainer = window.innerWidth;
-    this.heightContainer = window.innerHeight;
-
-    this.container.innerHTML =
-      `<svg
-        width="${this.widthContainer}"
-        height="${this.heightContainer}"
-        viewbox="0 0 ${this.widthContainer} ${this.heightContainer}"
-        style="background:${this.backColor || "none"}; cursor:${this.cursor ? "default" : "none"};">
-
-        ${this.gradientParticles ? this.drawGradient() : ''}
-        ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
-        ${this.drawTinyCursor()}
-
-    </svg>`;
-
-    this.tinyCursor ? this.nodeCursor = this.container.querySelector('.tiny-cursor circle') : null;
-    this.nodesParticles = this.container.querySelectorAll('.particles circle');
-    this.sorting === "desc" ? this.sortParticles() : null;
-    !this.transitionParticles ? this.points = Array(this.nbrParticles).fill().map((el,i) => this.pos) : null;
-    this.loop();
-  }
-
-
-
-
-  drawParticles() {
-    return `<g class="particles">
-      ${Array(this.nbrParticles).fill().map((_,i) =>
-        `<circle
-          r="${this.setRadiusParticles(i)}"
-          cx=${this.pos.x} cy=${this.pos.y}
-          fill="${this.fillParticles || "none"}"
-          fill-opacity="${this.fillOpacityParticles || 1}"
-          stroke="${this.strokeColorParticles || "none"}"
-          stroke-width="${this.strokeWidthParticles || 0}"
-          stroke-opacity="${this.strokeOpacityParticles || 1}"
-          id="${i + 1}">
-        </circle>`).join('')}
-    </g>`
-  }
-
-  drawTinyCursor() {
-    return `${this.tinyCursor ?
-      `<g class="tiny-cursor">
-        <circle
-          r=${this.radiusCursor || 10}
-          cx=${this.pos.x}
-          cy=${this.pos.y}
-          fill="${this.fillCursor || "none"}"
-          fill-opacity="${this.fillOpacityCursor || 1}"
-          stroke="${this.strokeColorCursor || "none"}"
-          stroke-width="${this.strokeWidthCursor || 0}"
-          stroke-opacity="${this.strokeOpacityCursor || 1}"
-          style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
-        </circle>
-    </g>` : ''}`
-  }
-
-
-
-  setParticles() {
-    this.particles = Array.from(this.nodesParticles);
-
-    for (const [i,particle] of this.particles.entries()) {
-
-      if (this.transitionParticles) {
-        particle.setAttribute('cx',this.pos.x )
-        particle.setAttribute('cy',this.pos.y);
-        particle.style.transitionProperty = "cx,cy"
-        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
-        particle.style.transitionTimingFunction = this.transitionParticles.easing;
-      }
-      else {
-        this.points[i] = this.points[i + 1];
-        this.points[this.points.length - 1] = { x: this.pos.x,y: this.pos.y };
-        particle.setAttribute('cx', this.points[i].x);
-        particle.setAttribute('cy',this.points[i].y);
-        this.rotate = `rotate(${ Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI }deg)`;
-        particle.style.transformOrigin = `${this.points[i].x}px ${this.points[i].y}px`;
-        particle.style.transform = this.rotate;
-      }
-    }
+    window.addEventListener('resize',(e) => this.init());
   }
 
   mousemoveCursor() {
@@ -141,11 +45,62 @@ export class Cursors{
     this.pos.y += this.diff.y * this.speed;
   }
 
+  init() {
+    this.tinyCursor ? this.setParamsCursor() : null;
+    this.setParamsParticles();
+    this.drawCursor();
+  }
+
   loop() {
     this.setParamsDiffs();
     this.tinyCursor ? this.setTinyCursor() : null;
     this.setParticles();
     requestAnimationFrame( () => this.loop() );
+  }
+
+  drawCursor(e) {
+    this.widthContainer = window.innerWidth;
+    this.heightContainer = window.innerHeight;
+
+    this.container.innerHTML =
+      `<svg
+        width="${this.widthContainer}"
+        height="${this.heightContainer}"
+        viewbox="0 0 ${this.widthContainer} ${this.heightContainer}"
+        style="background:${this.backColor || "none"}; cursor:${this.cursor ? "default" : "none"};">
+        ${this.gradientParticles ? this.drawGradient() : ''}
+        ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
+        ${this.drawTinyCursor()}
+    </svg>`;
+
+    this.svg = this.container.querySelector('svg');
+    this.tinyCursor ? this.nodeCursor = this.container.querySelector('.tiny-cursor circle') : null;
+    this.particles = Array.from(this.container.querySelectorAll('.particles circle'));
+    this.sorting === "desc" ? this.sortParticles() : null;
+    this.points = Array(this.nbrParticles).fill().map((el,i) => {
+      return {
+        node: this.particles[i],
+        x: this.pos.x,
+        y: this.pos.y,
+      }
+    });
+  }
+
+  drawTinyCursor() {
+    return `${this.tinyCursor ?
+      `<g class="tiny-cursor">
+        <circle
+          r=${this.radiusCursor || 10}
+          cx=${this.pos.x}
+          cy=${this.pos.y}
+          fill="${this.fillCursor || "none"}"
+          fill-opacity="${this.fillOpacityCursor || 1}"
+          stroke="${this.strokeColorCursor || "none"}"
+          stroke-width="${this.strokeWidthCursor || 0}"
+          stroke-opacity="${this.strokeOpacityCursor || 1}"
+          style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
+        </circle>
+    </g>` : ''}`
   }
 
   setTinyCursor() {
@@ -159,8 +114,39 @@ export class Cursors{
   }
 
 
+  drawParticles() {
+    return `<g class="particles">
+      ${Array(this.nbrParticles).fill().map((_,i) =>
+        `<circle
+          r="${this.setRadiusParticles(i)}"
+          cx=${this.pos.x} cy=${this.pos.y}
+          fill="${this.fillParticles || "none"}"
+          fill-opacity="${this.fillOpacityParticles || 1}"
+          stroke="${this.strokeColorParticles || "none"}"
+          stroke-width="${this.strokeWidthParticles || 0}"
+          stroke-opacity="${this.strokeOpacityParticles || 1}"
+          id="${i}">
+        </circle>`).join('')}
+    </g>`
+  }
+
+  setParticles() {
+    if (this.transitionParticles) {
+      for (const [i,particle] of this.particles.entries()) {
+        particle.setAttribute('cx',this.pos.x )
+        particle.setAttribute('cy',this.pos.y);
+        particle.style.transitionProperty = "cx,cy"
+        particle.style.transitionDuration = `${this.transitionParticles.duration+i*this.transitionParticles.delay}ms `;
+        particle.style.transitionTimingFunction = this.transitionParticles.easing;
+      }
+    }
+    else {
+      this.trailParticles();
+    }
+  }
+
   sortParticles(){
-    this.particlesD3 = d3.selectAll(this.nodesParticles);
+    this.particlesD3 = d3.selectAll(this.particles);
     this.particlesD3.data(this.particlesD3._groups[0].map((particle) => { return Number(particle.id) }));
     this.particlesD3.sort(d3.descending);
   }
@@ -179,5 +165,11 @@ export class Cursors{
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     return Math.ceil(Math.sqrt(this.width*this.width + this.height*this.height));
+  }
+
+  activeLinks() {
+    this.activeClass = 'active';
+    for (const link of this.links) { link.classList.remove(this.activeClass) };
+    this.link.classList.add(this.activeClass);
   }
 }

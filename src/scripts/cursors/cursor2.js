@@ -1,27 +1,29 @@
 
 import { Cursors } from "./../cursors";
-
+import { isTouchDevices } from "./../utils";
 export class Cursor2 extends Cursors{
 
   constructor(index) {
     super(index);
-    this.speed = 0.011;
-    this.tinyCursor = false;
+    this.speed = !isTouchDevices ? 0.5 : 0.9;
+    this.delta = !isTouchDevices ? 0.04 : 0.02;
     this.cursor = true;
+    this.tinyCursor = false;
     this.backColor = "none";
-    this.setParamsParticles();
-    this.drawCursor();
+    this.init();
+    this.loop();
   }
 
   setParamsParticles() {
-    this.nbrParticles = 150;
+    this.nbrParticles = 800;
     this.radiusStart = this.diagonalWindow()/10;
     this.radiusDiff = 0;
-    this.idGradient = "gradient"
+    this.sorting = "desc";
+    this.idGradient = "gradient";
     this.fillParticles = `url('#${this.idGradient}')`;
     this.gradientParticles = {
-      color1: "#BCE3D3",
-      color2: "#55828b"
+      color1: getComputedStyle(document.body).getPropertyValue('--color-third'),
+      color2: "#4B5D8F"
     };
   }
 
@@ -33,5 +35,17 @@ export class Cursor2 extends Cursors{
       </linearGradient>
     </defs>`
   }
-}
 
+  trailParticles(e) {
+    this.posTrail = { x: this.pos.x, y : this.pos.y }
+    for (const [i,point] of this.points.entries()) {
+      this.nextParticle = this.points[i + 1] || this.points[0];
+      point.x = this.posTrail.x;
+      point.y = this.posTrail.y;
+      point.node.setAttribute('cx',this.posTrail.x )
+      point.node.setAttribute('cy',this.posTrail.y);
+      this.posTrail.x += (this.nextParticle.x - point.x) * this.delta;
+      this.posTrail.y += (this.nextParticle.y - point.y) * this.delta;
+    }
+  }
+}

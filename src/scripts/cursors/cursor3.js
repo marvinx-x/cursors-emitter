@@ -8,9 +8,9 @@ export class Cursor3 extends Cursors{
     super(index);
     this.backColor = getComputedStyle(document.body).getPropertyValue('--color-dark');
     this.speed = !isTouchDevices ? 0.1 : 0.8;
-    this.setParamsCursor();
-    this.setParamsParticles();
-    this.drawCursor();
+    this.cursor = true;
+    this.init();
+    this.loop();
   }
 
   setParamsCursor() {
