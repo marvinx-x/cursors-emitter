@@ -48,6 +48,7 @@ export class Cursors{
   init() {
     this.tinyCursor ? this.setParamsCursor() : null;
     this.setParamsParticles();
+    this.setParamsText();
     this.drawCursor();
   }
 
@@ -73,6 +74,9 @@ export class Cursors{
         ${this.gradientParticles ? this.drawGradient() : ''}
         ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
         ${this.drawTinyCursor()}
+        ${this.drawText()}
+
+
     </svg>`;
 
     this.svg = this.container.querySelector('svg');
@@ -87,6 +91,34 @@ export class Cursors{
       }
     });
   }
+
+  drawText() {
+    return `
+    ${this.fontFamilyText ? `
+    <defs>
+      <style>@import url('https://fonts.googleapis.com/css2?family=${this.fontFamilyText.indexOf(' ') >= 0 ? this.fontFamilyText.replace(' ', "+") : this.fontFamilyText}:wght@${this.fontWeightText || 400}&display=swap');</style>
+    </defs>` : ''}
+    <text
+      x="50%"
+      y="50%"
+      dominant-baseline="middle"
+      text-anchor="middle"
+      paint-order="stroke"
+      font-family="${this.fontFamilyText || "Inter"}"
+      style="
+      font-size : ${this.fontSizeText || "20vw"};
+      font-weight : ${this.fontWeightText || 400 };
+      fill : ${this.fillColorText || getComputedStyle(document.body).getPropertyValue('--color-third')};
+      fill-opacity : ${this.fillOpacityText || 1};
+      stroke:${this.strokeColorText || "none"};
+      stroke-width: ${this.strokeWidthText || 0}px;
+      stroke-linejoin: ${this.strokeLineJoinText || "round"};
+      stroke-opacity: ${this.strokeOpacityText || 1};
+      mix-blend-mode: ${this.mixBlendModeText || "unset"};">
+      ${this.text || "title"}
+    </text>`
+  }
+
 
   drawTinyCursor() {
     return `${this.tinyCursor ?

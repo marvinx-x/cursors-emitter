@@ -12,6 +12,13 @@ export class Cursor3 extends Cursors{
     this.loop();
   }
 
+  setParamsText() {
+    this.text = "tunnel";
+    this.fontFamilyText = "Monoton";
+    this.fontSizeText = 200;
+    this.mixBlendModeText = "overlay"
+  }
+
   setParamsCursor() {
     this.radiusCursor = 30;
     this.fillCursor = getComputedStyle(document.body).getPropertyValue('--color-third');

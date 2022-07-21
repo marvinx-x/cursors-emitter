@@ -9,6 +9,13 @@ export class Cursor1 extends Cursors{
     this.loop();
   }
 
+  setParamsText() {
+    this.text = "Waves"
+    this.fontFamilyText = "Krona One";
+    this.fillColorText = "white";
+    this.mixBlendModeText = "difference"
+  }
+
   setParamsCursor() {
     this.radiusCursor = 15;
     this.fillCursor = getComputedStyle(document.body).getPropertyValue('--color-third');

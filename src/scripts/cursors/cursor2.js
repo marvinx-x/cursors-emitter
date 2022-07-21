@@ -14,9 +14,16 @@ export class Cursor2 extends Cursors{
     this.loop();
   }
 
+  setParamsText() {
+    this.text = "Trail";
+    this.fontFamilyText = "Syne";
+    this.fontWeightText = 800;
+    this.mixBlendModeText = "soft-light"
+  }
+
   setParamsParticles() {
     this.nbrParticles = 800;
-    this.radiusStart = this.diagonalWindow()/10;
+    this.radiusStart = this.diagonalWindow()/8;
     this.radiusDiff = 0;
     this.sorting = "desc";
     this.idGradient = "gradient";
@@ -35,4 +42,5 @@ export class Cursor2 extends Cursors{
       </linearGradient>
     </defs>`
   }
+
 }
