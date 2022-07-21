@@ -58,6 +58,7 @@ export class Cursors{
     requestAnimationFrame( () => this.loop() );
   }
 
+
   drawCursor(e) {
     this.widthContainer = window.innerWidth;
     this.heightContainer = window.innerHeight;
@@ -67,6 +68,7 @@ export class Cursors{
         width="${this.widthContainer}"
         height="${this.heightContainer}"
         viewbox="0 0 ${this.widthContainer} ${this.heightContainer}"
+        preserveAspectRatio="${this.preserveAspectRatio || "none"}"
         style="background:${this.backColor || "none"}; cursor:${this.cursor ? "default" : "none"};">
         ${this.gradientParticles ? this.drawGradient() : ''}
         ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
@@ -115,7 +117,7 @@ export class Cursors{
 
 
   drawParticles() {
-    return `<g class="particles">
+    return `<g class="particles" filter=${this.filterParticles || "none"}>
       ${Array(this.nbrParticles).fill().map((_,i) =>
         `<circle
           r="${this.setRadiusParticles(i)}"
@@ -141,7 +143,16 @@ export class Cursors{
       }
     }
     else {
-      this.trailParticles();
+      this.posTrail = { x: this.pos.x, y : this.pos.y }
+      for (const [i,point] of this.points.entries()) {
+        this.nextParticle = this.points[i + 1] || this.points[0];
+        point.x = this.posTrail.x;
+        point.y = this.posTrail.y;
+        point.node.setAttribute('cx',this.posTrail.x )
+        point.node.setAttribute('cy',this.posTrail.y);
+        this.posTrail.x += (this.nextParticle.x - point.x) * (this.delta || 0.9);
+        this.posTrail.y += (this.nextParticle.y - point.y) * (this.delta || 0.9);
+      }
     }
   }
 

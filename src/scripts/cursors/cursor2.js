@@ -35,17 +35,4 @@ export class Cursor2 extends Cursors{
       </linearGradient>
     </defs>`
   }
-
-  trailParticles(e) {
-    this.posTrail = { x: this.pos.x, y : this.pos.y }
-    for (const [i,point] of this.points.entries()) {
-      this.nextParticle = this.points[i + 1] || this.points[0];
-      point.x = this.posTrail.x;
-      point.y = this.posTrail.y;
-      point.node.setAttribute('cx',this.posTrail.x )
-      point.node.setAttribute('cy',this.posTrail.y);
-      this.posTrail.x += (this.nextParticle.x - point.x) * this.delta;
-      this.posTrail.y += (this.nextParticle.y - point.y) * this.delta;
-    }
-  }
 }

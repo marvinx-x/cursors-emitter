@@ -5,7 +5,6 @@ export class Cursor1 extends Cursors{
   constructor(index) {
     super(index);
     this.speed = !isTouchDevices ? 0.5 : 0.9;
-    this.cursor = true;
     this.init();
     this.loop();
   }
