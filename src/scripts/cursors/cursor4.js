@@ -14,11 +14,11 @@ export class Cursor4 extends Cursors{
   setParamsText() {
     this.text = "Mask";
     this.fontFamilyText = "Sonsie One";
-    this.fontSizeText = 200;
-    this.mixBlendModeText = "exclusion";
+    this.fontSizeText = "10vw"
+    this.mixBlendModeText = "soft-light";
     this.fillColorText = "black";
     this.strokeColorText = "white";
-    this.strokeWidthText = 50;
+    this.strokeWidthText = 10;
   }
 
   setParamsCursor() {
@@ -30,9 +30,9 @@ export class Cursor4 extends Cursors{
   }
 
   setParamsParticles() {
-    this.nbrParticles = 200;
+    this.nbrParticles = 800;
     this.radiusStart = this.diagonalWindow()/9;
-    this.radiusDiff = 0.3;
+    this.radiusDiff = 0;
     this.directionRadius = ">"
     this.idMask = "maskGradient";
     this.idCursorFilter = "filter-cursor";
@@ -82,18 +82,18 @@ export class Cursor4 extends Cursors{
 
   filterImageCursor() {
     return `<filter id="filter-image-cursor" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="1 0 0 0 0
-        1 0 0 0 0
-        1 0 0 0 0
-        0 0 0 1 0"
-      in="SourceGraphic" result="colormatrix"/>
-      <feComponentTransfer in="colormatrix" result="componentTransfer">
-          <feFuncR type="table" tableValues="0.03 0.8"/>
-          <feFuncG type="table" tableValues="0.57 1"/>
-          <feFuncB type="table" tableValues="0.49 0.53"/>
-          <feFuncA type="table" tableValues="0 1"/>
-        </feComponentTransfer>
-        <feBlend mode="color-burn" in="componentTransfer" in2="SourceGraphic" result="blend"/>
+    <feColorMatrix type="matrix" values=".33 .33 .33 0 0
+        .33 .33 .33 0 0
+        .33 .33 .33 0 0
+        0 0 0 1 0">
+    </feColorMatrix>
+
+    <!-- Map the grayscale result to the gradient map provided in tableValues -->
+    <feComponentTransfer color-interpolation-filters="sRGB">
+      <feFuncR type="table" tableValues=".996078431  .984313725"></feFuncR>
+      <feFuncG type="table" tableValues=".125490196  .941176471"></feFuncG>
+      <feFuncB type="table" tableValues=".552941176  .478431373"></feFuncB>
+    </feComponentTransfer>
     </filter>`
   }
 }

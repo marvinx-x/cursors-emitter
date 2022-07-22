@@ -11,9 +11,12 @@ export class Cursor1 extends Cursors{
 
   setParamsText() {
     this.text = "Waves"
-    this.fontFamilyText = "Krona One";
+    this.fontFamilyText = 'Sonsie One';
+    this.fontSizeText = "10vw"
     this.fillColorText = "white";
-    this.mixBlendModeText = "difference"
+    this.strokeColorText = getComputedStyle(document.body).getPropertyValue('--color-third');
+    this.strokeWidthText = 3;
+    this.mixBlendModeText = "hue"
   }
 
   setParamsCursor() {

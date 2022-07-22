@@ -18,6 +18,8 @@ export class Cursor2 extends Cursors{
     this.text = "Trail";
     this.fontFamilyText = "Syne";
     this.fontWeightText = 800;
+    this.fontSizeText = "16vw"
+    this.fillColorText = getComputedStyle(document.body).getPropertyValue('--color-primary');
     this.mixBlendModeText = "soft-light"
   }
 

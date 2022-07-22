@@ -75,8 +75,6 @@ export class Cursors{
         ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
         ${this.drawTinyCursor()}
         ${this.drawText()}
-
-
     </svg>`;
 
     this.svg = this.container.querySelector('svg');
