@@ -1,9 +1,22 @@
 header(role="banner")
-  h1: a(href="https://www.marvinx.com" title="Marlène Bruhat | Marvinx | Creative Developer" target="_blank")
+  block header
+    h1=nameCursor
+
+  nav(role="navigation"): ul
+    each cursor, key in cursors
+      li: a(href="index"+(key == 0 ? "" : key+1)+".pug" class=key == 0 ? "active" : null): span= "demo "+(key+1)
+        i= " ("+cursor+")"
+
+  //-ul
+    - var urlGits = ["https://gitlab.com/marvinx-x", "https://github.com/marvinx-x", "https://bitbucket.org/Marvin_X"]
+    each url in urlGits
+      - var gitName = url.substring(url.indexOf('//') + 2, url.indexOf('.'));
+      - var firstLetterGit = gitName.charAt(0).toUpperCase();
+      - var name = firstLetterGit + gitName.slice(1)
+      li: a(href=url+"/cursors-emitter" title=name target="_blank")= name
+
+  #logo
+    a(href="https://marvinx.com" title="Marlène Bruhat | Marvinx | Creative Developer" target="_blank")
       - for(var i=0; i < 2; i++)
         span: svg(aria-hidden="true" viewBox='0 0 62 62' preserveAspectRatio='xMinYMin meet')
           path(aria-hidden="true" d="M34.2,27.8V0H0v27.8h6.3V6.1h7.6v13.8h6.1V6.3h7.9V62H62V27.8H34.2z M55.9,41.9h-14v6.3h14v7.8H34.2V34.2h21.8V41.9z")
-
-nav(role="navigation"): ul
-  - for(var i=0; i < nbrCursors; i++)
-    li: a(href="index"+(i == 0 ? "" : i+1)+".pug"): span= "Cursor "+(i+1)

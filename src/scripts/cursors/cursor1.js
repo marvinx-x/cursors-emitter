@@ -28,6 +28,7 @@ export class Cursor1 extends Cursors{
 
   setParamsParticles() {
     this.strokeWidthParticles = 1;
+    this.strokeOpacityParticles = 0.05;
     this.strokeColorParticles = getComputedStyle(document.body).getPropertyValue('--color-third');
     this.radiusStart = this.radiusCursor*3;
     this.radiusDiff = 7;

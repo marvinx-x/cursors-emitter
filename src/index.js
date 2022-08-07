@@ -28,5 +28,5 @@ export const setCursor = () => {
 
 window.addEventListener('load', async () => {
   await utils();
-  swupTransitions();
+  // swupTransitions();
 });

@@ -1,8 +1,0 @@
-- var urlGits = ["https://gitlab.com/marvinx-x", "https://github.com/marvinx-x", "https://bitbucket.org/Marvin_X"]
-
-footer(role="contentinfo"): ul
-  each url in urlGits
-    - var gitName = url.substring(url.indexOf('//') + 2, url.indexOf('.'));
-    - var firstLetterGit = gitName.charAt(0).toUpperCase();
-    - var name = firstLetterGit + gitName.slice(1)
-    li: a(href=url+"/cursors-emitter" title=name target="_blank")= name

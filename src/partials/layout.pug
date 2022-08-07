@@ -1,5 +1,5 @@
 block vars
-  - var nbrCursors = 4;
+  - var cursors = ["Waves", "Trail", "Tube", "Mask"]
 
 mixin setContainerCursor(number)
   section(class="cursor-container" id="cursor-"+number)
@@ -13,7 +13,5 @@ html(lang="en")
 
     main(role="main" id="swup")
       block main
-
-    include footer
 
     script(type="module" src="index.js")

@@ -1,18 +1,59 @@
+
+@font-face {
+  font-family: 'monument_extendedblack';
+  src: url('./fonts/monumentextended-black-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'monument_extendedbold';
+  src: url('./fonts/monumentextended-bold-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'monument_extendedregular';
+  src: url('./fonts/monumentextended-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'monument_extendedlight';
+  src: url('./fonts/monumentextended-light-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'monument_extendedultralight';
+  src: url('./fonts/monumentextended-ultralight-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* VARS */
 :root{
-  --color-primary : #364958;
-  --color-secondary : #55828b;
-  --color-third : #BCE3D3;
-  --color-dark : #001813;
+  --dark : #181825;
   --white : #ffffff;
-  font-size: 62.5%;
   /* FONT */
-  --font-size-global : 1.6rem;
-  --font-family : 'Inter', sans-serif;
+  font-size: 62.5%;
+  --font-size-global : 1.3rem;
+  --line-height-global : 1.7;
+  --letter-spacing-global : 0.1rem;
+  --font-family : "monument_extendedbold", "Helvetica", "Arial", sans-serif;
   /*  */
-  --padding-global : clamp(3.6rem, 5vw, 6.2rem);
-  --length-logo : 6rem;
+  --padding-global : clamp(0rem, 5vw, 2.5rem);
+  --length-logo : 5.6rem;
 }
+$size-bullet : 8px;
 
 /*  */
 /* RESET */
@@ -29,12 +70,13 @@ html, body{
 }
 
 body{
-  // text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: var(--font-size-global);
   font-family: var(--font-family);
   color: var(--color-secondary);
+  background-color: var(--dark);
+  color : var(--white);
 }
 
 li{
@@ -43,7 +85,19 @@ li{
 
 a{
   text-decoration: none;
-  color : var(--color-secondary);
+  color : var(--white);
+}
+
+/*  */
+/* TITLE */
+/*  */
+h1{
+  font-size:clamp(5.9rem, 12vw, 15rem);
+  line-height: 0.77;
+  // text-transform: uppercase;
+  justify-self: flex-start;
+  letter-spacing: clamp(0.25rem, 0.75vw, 1rem);
+  flex : 1;
 }
 
 /*  */
@@ -55,21 +109,107 @@ header{
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  top: var(--padding-global);
-  left: var(--padding-global);
+  top: 0;
+  left: 0;
+  padding: var(--padding-global);
   z-index: 10000;
+  width: 100%;
+  align-items: flex-end;
+  gap : 4.8vw;
+
+  /*  */
+  /* GIT */
+  /*  */
+  & > ul{
+    font-family: 'monument_extendedregular';
+    text-transform: uppercase;
+    font-size: var(--font-size-global);
+    line-height: var(--line-height-global);
+    letter-spacing: var(--letter-spacing-global);
+
+    a{
+      transition: opacity 200ms ease;
+
+      &:hover{
+        opacity: .75;
+      }
+    }
+  }
+}
+
+/*  */
+/* NAV */
+/*  */
+nav[role=navigation]{
+
+  li{
+    line-height: var(--line-height-global);
+  }
+
+  a{
+    position: relative;
+
+    &::before{
+      content: "";
+      display: block;
+      position: absolute;
+      right: calc(100% + #{$size-bullet});
+      top: 50%;
+      width: $size-bullet;
+      height: $size-bullet;
+      border-radius: $size-bullet;
+      margin-top: -(calc($size-bullet / 2));
+      background-color: var(--white);
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+
+    &:hover{
+
+      &::before{
+        opacity: 0.25;
+      }
+    }
+
+    &.active{
+
+      &::before{
+        opacity: 1;
+      }
+    }
+  }
+
+  span{
+    text-transform: uppercase;
+    font-size: var(--font-size-global);
+    letter-spacing: var(--letter-spacing-global);
+  }
+
+  i{
+    text-transform: lowercase;
+    font-style: normal;
+    font-weight: 100;
+    font-family: 'monument_extendedultralight';
+    opacity: .85;
+  }
 }
 
 /*  */
 /* LOGO */
 /*  */
-h1{
-  a{
+#logo{
+  flex : 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 4rem;
+
+  & > a{
     display: block;
     width: var(--length-logo);
     height: var(--length-logo);
     position: relative;
     perspective: 1000px;
+    margin-bottom: 0.7rem;
 
     &:hover{
       span{
@@ -81,108 +221,30 @@ h1{
         }
       }
     }
-  }
-
-  span{
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition : transform 2s ease;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    &:first-of-type{
-      path{
-        fill : var(--color-primary);
-      }
-    }
-    &:last-of-type{
-      transform: rotateY(180deg);
-      path{
-        fill : var(--color-secondary);
-      }
-    }
-  }
-}
-
-/*  */
-/* NAV */
-/*  */
-nav[role=navigation]{
-  position: fixed;
-  top: var(--padding-global);
-  right: var(--padding-global);
-  height: var(--length-logo);
-  display: flex;
-  align-items: center;
-  cursor: none;
-  z-index: 10;
-
-  ul{
-    display: flex;
-    flex-flow: row wrap;
-    gap: 3.6rem;
-  }
-
-  a{
-    position: relative;
-    font-weight: 600;
-
-    &::before{
-      content: '';
-      position: absolute;
-      width: 100%;
-      background: currentColor;
-      top: 100%;
-      left: 0;
-      height: 0.5rem;
-      border-radius: 1rem;
-      transition: transform 0.2s;
-      transition-timing-function: cubic-bezier(0.2, 0.57, 0.67, 1.53);
-      pointer-events: none;
-      transform: scale3d(1, 0.1, 1);
-      color: var(--color-secondary);
-    }
 
     span{
-      transform: translate3d(0, 0, 0);
-      display: inline-block;
-      transition: transform 0.2s 0.05s cubic-bezier(0.2, 0.57, 0.67, 1.53);
-    }
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition : transform 2s ease;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
 
-    &:hover, &.active{
-      &::before{
-        transition-timing-function: cubic-bezier(0.8, 0, 0.1, 1);
-        transform: scale3d(1, 1, 1);
+      &:first-of-type{
+        path{
+          fill : var(--white);
+        }
       }
-
-      span{
-        transform: translate3d(0, -4px, 0);
-        transition-duration: 0.4s;
-        transition-delay: 0s;
+      &:last-of-type{
+        transform: rotateY(180deg);
+        path{
+          fill :var(--white);
+          opacity: .7;
+        }
       }
-    }
-
-    &.active{
-      pointer-events: none;
-    }
-  }
-}
-
-@media screen and (max-width: 600px){
-
-  header[role=banner]{
-    align-items: flex-start;
-  }
-
-  nav[role=navigation]{
-    height: auto;
-
-    ul{
-      flex-direction: column;
     }
   }
 }
@@ -201,53 +263,27 @@ main[role=main]{
   width: 100vw;
   height: calc(var(--vh, 1vh) * 100);
 
-
   g{
     transform-origin: center center;
   }
 }
 
-/*  */
-/* FOOTER */
-/*  */
-footer[role=contentinfo]{
-  position: fixed;
-  bottom: var(--padding-global);
-  right: var(--padding-global);
-  z-index: 10000;
 
-  ul{
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
+@media screen and (max-width: 1024px){
+
+  header[role=banner]{
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
   }
 
-  a{
-    position: relative;
-    margin-left: 1.6rem;
-    font-size: 90%;
-    color: var(--color-primary);
-
-    &::before{
-      content: "";
-      display: block;
-      transform-origin: 100% 50%;
-      transform: scale3d(0, 1, 1);
-      transition: transform 0.3s;
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      top: 100%;
-      left: 0;
-      pointer-events: none;
-    }
-
-    &:hover{
-      &::before{
-        transform-origin: 0% 50%;
-        transform: scale3d(1, 1, 1);
-      }
-    }
+  h1, #logo{
+    flex: unset;
   }
+
+  nav{
+    flex: 1;
+    margin-left: calc(var(--padding-global) - #{$size-bullet});
+  }
+
 }
