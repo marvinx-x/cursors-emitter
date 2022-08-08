@@ -5,27 +5,18 @@ export class Cursor4 extends Cursors{
 
   constructor(index) {
     super(index);
-    this.speed = 0.3;
-    this.delta = 0.05;
+    this.speed = 0.2;
+    this.delta = 0.02;
     this.init();
     this.loop();
   }
 
-  setParamsText() {
-    this.text = "Mask";
-    this.fontFamilyText = "Sonsie One";
-    this.fontSizeText = "10vw"
-    this.mixBlendModeText = "soft-light";
-    this.fillColorText = "black";
-    this.strokeColorText = "white";
-    this.strokeWidthText = 10;
-  }
-
   setParamsCursor() {
-    this.radiusCursor = 30;
-    this.strokeColorCursor = "white";
-    this.strokeWidthCursor = 3;
-    this.maxSqueeze = 0.3;
+    this.radiusCursorBack = 32;
+    this.radiusCursor = 16;
+    this.strokeColorCursorBack = getComputedStyle(document.body).getPropertyValue('--white')
+    this.fillCursor = getComputedStyle(document.body).getPropertyValue('--white');
+    this.maxSqueeze = 0.1;
     this.accelerator = 1000;
   }
 
@@ -40,10 +31,9 @@ export class Cursor4 extends Cursors{
     this.fillParticles = `url('#${this.idMask}')`;
     this.sorting = "desc";
     this.maskCursor = {
-      image: "https://i.picsum.photos/id/1069/3500/2333.jpg?hmac=VBJ1vR2opkcKLS9NKGDl5uPxF02u6dSqbwc1x1b4oJc"
+      video : "https://vod-progressive.akamaized.net/exp=1659995225~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3417%2F21%2F542086093%2F2570739662.mp4~hmac=2db82ab15ba714be963daffc60d6f3e69d1580e4664248b8bcb400ff44021bca/vimeo-prod-skyfire-std-us/01/3417/21/542086093/2570739662.mp4"
     };
   }
-
 
   drawMaskCursor() {
     return `
@@ -57,45 +47,56 @@ export class Cursor4 extends Cursors{
         ${this.filterImageBack()}
         ${this.filterCursor()}
       </defs>
-      <image xlink:href=${this.maskCursor.image} width="100%" height="100%" preserveAspectRatio="xMidYMid slice" filter="url(#filter-image-back)" />
-      <g id="maskReveal" mask="url(#theMask)" >
-        <image xlink:href=${this.maskCursor.image} width="100%" height="100%" preserveAspectRatio="xMidYMid slice" filter="url(#filter-image-cursor)" />
-      </g>`
+      ${this.insertVideo("back")}
+      <g id="maskReveal" mask="url(#theMask)">${this.insertVideo("cursor")}</g>`
   }
 
+  insertVideo(filter) {
+    return `
+      <foreignObject x="0" y="0" width="100%" height="100%" filter=url(#filter-image-${filter})>
+        <video width="100%" height="100%" controls="false" autoplay loop muted crossorigin=anonymous >
+            <source src="${this.maskCursor.video}" type="video/mp4" />
+        </video>
+      </foreignObject>
+    `
+  }
 
   filterCursor() {
-    return `<filter id="${this.idCursorFilter}">
+    return `
+    <filter id="${this.idCursorFilter}">
       <feGaussianBlur in="SourceGraphic" stdDeviation="0" />
     </filter>`
   }
 
   filterImageBack() {
-    return `<filter id="filter-image-back">
-      <feColorMatrix type="matrix" values=".03 .03 .03 0 0
-      .03 .03 .03 0 0
-      .03 .03 .03 0 0
-      0   0   0  1 0">
+    return `
+    <filter id="filter-image-back">
+    <feColorMatrix type="matrix" values=".33 .33 .33 0 0
+        .33 .33 .33 0 0
+        .33 .33 .33 0 0
+        0 0 0 1 0">
       </feColorMatrix>
     </filter>`
   }
 
   filterImageCursor() {
-    return `<filter id="filter-image-cursor" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-    <feColorMatrix type="matrix" values=".33 .33 .33 0 0
+    return `
+      <filter id="filter-image-cursor" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values=".33 .33 .33 0 0
         .33 .33 .33 0 0
         .33 .33 .33 0 0
         0 0 0 1 0">
-    </feColorMatrix>
-
-    <!-- Map the grayscale result to the gradient map provided in tableValues -->
-    <feComponentTransfer color-interpolation-filters="sRGB">
-      <feFuncR type="table" tableValues=".996078431  .984313725"></feFuncR>
-      <feFuncG type="table" tableValues=".125490196  .941176471"></feFuncG>
-      <feFuncB type="table" tableValues=".552941176  .478431373"></feFuncB>
-    </feComponentTransfer>
+      </feColorMatrix>
+      <feComponentTransfer in="colormatrix" result="componentTransfer">
+        <feFuncR type="table" tableValues="0.55 0.25"/>
+        <feFuncG type="table" tableValues="0.06 1"/>
+        <feFuncB type="table" tableValues="0.93 0.91"/>
+        <feFuncA type="table" tableValues="0 1"/>
+        </feComponentTransfer>
+      <feBlend mode="normal" in="componentTransfer" in2="SourceGraphic" result="blend"/>
     </filter>`
   }
 }
+
 
 

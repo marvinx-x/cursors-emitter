@@ -4,7 +4,7 @@ header(role="banner")
 
   nav(role="navigation"): ul
     each cursor, key in cursors
-      li: a(href="index"+(key == 0 ? "" : key+1)+".pug" class=key == 0 ? "active" : null): span= "demo "+(key+1)
+      li: a(href="index"+(key == 0 ? "" : key+1)+".pug"): span= "demo "+(key+1)
         i= " ("+cursor+")"
 
   //-ul

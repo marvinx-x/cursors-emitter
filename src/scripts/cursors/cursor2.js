@@ -9,18 +9,8 @@ export class Cursor2 extends Cursors{
     this.delta = !isTouchDevices ? 0.04 : 0.02;
     this.cursor = true;
     this.tinyCursor = false;
-    this.backColor = "none";
     this.init();
     this.loop();
-  }
-
-  setParamsText() {
-    this.text = "Trail";
-    this.fontFamilyText = "Syne";
-    this.fontWeightText = 800;
-    this.fontSizeText = "16vw"
-    this.fillColorText = getComputedStyle(document.body).getPropertyValue('--color-primary');
-    this.mixBlendModeText = "soft-light"
   }
 
   setParamsParticles() {
@@ -31,8 +21,8 @@ export class Cursor2 extends Cursors{
     this.idGradient = "gradient";
     this.fillParticles = `url('#${this.idGradient}')`;
     this.gradientParticles = {
-      color1: getComputedStyle(document.body).getPropertyValue('--color-third'),
-      color2: "#4B5D8F"
+      color1: getComputedStyle(document.body).getPropertyValue('--secondary'),
+      color2: getComputedStyle(document.body).getPropertyValue('--primary'),
     };
   }
 
@@ -44,5 +34,4 @@ export class Cursor2 extends Cursors{
       </linearGradient>
     </defs>`
   }
-
 }

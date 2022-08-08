@@ -1,5 +1,5 @@
 import Swup from 'swup';
-import SwupOverlayTheme from '@swup/overlay-theme';
+import SwupFadeTheme from '@swup/fade-theme';
 import { setCursor } from './../index'
 
 
@@ -7,22 +7,11 @@ export function swupTransitions() {
 
   const swup = new Swup({
     linkSelector : `a[href^="/index"], a[href^="index"]`,
-    plugins: [
-      new SwupOverlayTheme({
-      color: getComputedStyle(document.body).getPropertyValue('--color-third')
-    })]
+    plugins: [new SwupFadeTheme()]
   });
 
-  swup.on('transitionStart', (e) => {
-    document.body.style.pointerEvents = 'none';
-  });
-
-   swup.on('transitionEnd', (e) => {
-    document.body.style.pointerEvents = 'auto';
-   });
-
-   setCursor();
-   swup.on('contentReplaced', (e) => {
+  setCursor();
+  swup.on('contentReplaced',() => {
      setCursor();
   });
 }

@@ -48,7 +48,6 @@ export class Cursors{
   init() {
     this.tinyCursor ? this.setParamsCursor() : null;
     this.setParamsParticles();
-    this.setParamsText();
     this.drawCursor();
   }
 
@@ -60,7 +59,7 @@ export class Cursors{
   }
 
 
-  drawCursor(e) {
+  drawCursor() {
     this.widthContainer = window.innerWidth;
     this.heightContainer = window.innerHeight;
 
@@ -74,11 +73,13 @@ export class Cursors{
         ${this.gradientParticles ? this.drawGradient() : ''}
         ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
         ${this.drawTinyCursor()}
-        ${this.drawText()}
     </svg>`;
 
     this.svg = this.container.querySelector('svg');
-    this.tinyCursor ? this.nodeCursor = this.container.querySelector('.tiny-cursor circle') : null;
+    this.tinyCursor ? this.nodeCursors = this.container.querySelectorAll('.tiny-cursor circle') : null;
+
+
+
     this.particles = Array.from(this.container.querySelectorAll('.particles circle'));
     this.sorting === "desc" ? this.sortParticles() : null;
     this.points = Array(this.nbrParticles).fill().map((el,i) => {
@@ -90,71 +91,67 @@ export class Cursors{
     });
   }
 
-  drawText() {
-    return `
-    ${this.fontFamilyText ? `
-    <defs>
-      <style>@import url('https://fonts.googleapis.com/css2?family=${this.fontFamilyText.indexOf(' ') >= 0 ? this.fontFamilyText.replace(' ', "+") : this.fontFamilyText}:wght@${this.fontWeightText || 400}&display=swap');</style>
-    </defs>` : ''}
-    <text
-      x="50%"
-      y="50%"
-      dominant-baseline="middle"
-      text-anchor="middle"
-      paint-order="stroke"
-      font-family="${this.fontFamilyText || "Inter"}"
-      style="
-      font-size : ${this.fontSizeText || "20vw"};
-      font-weight : ${this.fontWeightText || 400 };
-      fill : ${this.fillColorText || getComputedStyle(document.body).getPropertyValue('--color-third')};
-      fill-opacity : ${this.fillOpacityText || 1};
-      stroke:${this.strokeColorText || "none"};
-      stroke-width: ${this.strokeWidthText || 0}px;
-      stroke-linejoin: ${this.strokeLineJoinText || "round"};
-      stroke-opacity: ${this.strokeOpacityText || 1};
-      mix-blend-mode: ${this.mixBlendModeText || "unset"};">
-      ${this.text || "title"}
-    </text>`
-  }
-
-
   drawTinyCursor() {
     return `${this.tinyCursor ?
       `<g class="tiny-cursor">
         <circle
+          r=${this.radiusCursorBack || 10}
+          cx=${this.pos.x}
+          cy=${this.pos.y}
+          fill="${this.fillCursorBack || "none"}"
+          fill-opacity="${this.fillOpacityCursorBack || 1}"
+          stroke="${this.strokeColorCursorBack || "none"}"
+          stroke-width="${this.strokeWidthCursorBack || 1}"
+          stroke-opacity="${this.strokeOpacityCursorBack || 1}"
+          style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
+        </circle>
+        <circle
           r=${this.radiusCursor || 10}
           cx=${this.pos.x}
           cy=${this.pos.y}
-          fill="${this.fillCursor || "none"}"
+          fill="${this.fillCursor || "white"}"
           fill-opacity="${this.fillOpacityCursor || 1}"
           stroke="${this.strokeColorCursor || "none"}"
           stroke-width="${this.strokeWidthCursor || 0}"
           stroke-opacity="${this.strokeOpacityCursor || 1}"
           style="transform-origin: ${this.pos.x}px ${this.pos.y}px">
         </circle>
-    </g>` : ''}`
+     </g>` : ''}`
   }
 
   setTinyCursor() {
     this.rotate = `rotate(${ Math.atan2(this.diff.y, this.diff.x) * 180 / Math.PI }deg)`;
     this.squeeze = Math.min(Math.sqrt(Math.pow(this.diff.x, 2) + Math.pow(this.diff.y, 2)) / this.accelerator, this.maxSqueeze);
     this.scale = `scale(${1 + this.squeeze},${1 - this.squeeze})`;
-    this.nodeCursor.setAttribute('cx', this.pos.x)
-    this.nodeCursor.setAttribute('cy',this.pos.y)
-    this.nodeCursor.style.transformOrigin = `${this.pos.x}px ${this.pos.y}px`;
-    this.nodeCursor.style.transform = this.rotate + this.scale;
+    for (const [i,tinyCursor] of this.nodeCursors.entries()) {
+      tinyCursor.setAttribute('cx', this.pos.x)
+      tinyCursor.setAttribute('cy',this.pos.y)
+      tinyCursor.style.transformOrigin = `${this.pos.x}px ${this.pos.y}px`;
+      tinyCursor.style.transform = this.rotate + this.scale;
+    }
   }
 
 
   drawParticles() {
     return `<g class="particles" filter=${this.filterParticles || "none"}>
+      ${(() => {
+        if (this.strokeGradient) {
+          return `
+          <defs>
+            <linearGradient id=${this.strokeGradient.idStrokeGradient} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color=${this.strokeGradient.color1} />
+              <stop offset="100%" stop-color=${this.strokeGradient.color2} />
+            </linearGradient>
+          </defs>`
+        }
+      })()}
       ${Array(this.nbrParticles).fill().map((_,i) =>
         `<circle
           r="${this.setRadiusParticles(i)}"
           cx=${this.pos.x} cy=${this.pos.y}
           fill="${this.fillParticles || "none"}"
           fill-opacity="${this.fillOpacityParticles || 1}"
-          stroke="${this.strokeColorParticles || "none"}"
+          stroke="${this.strokeGradient ? `url(#${this.strokeGradient.idStrokeGradient})` : this.strokeColorParticles}"
           stroke-width="${this.strokeWidthParticles || 0}"
           stroke-opacity="${this.strokeOpacityParticles || 1}"
           id="${i}">

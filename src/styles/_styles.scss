@@ -35,6 +35,8 @@
 :root{
   --dark : #181825;
   --white : #ffffff;
+  --primary : #3EFFE8;
+  --secondary : #8C0FEE;
   /* FONT */
   font-size: 62.5%;
   --font-size-global : 1.26rem;
@@ -80,6 +82,15 @@ a{
   color : var(--white);
 }
 
+video::-webkit-media-controls {
+  display: none;
+}
+
+
+video{
+  object-fit: cover;
+}
+
 /*  */
 /* TITLE */
 /*  */
@@ -103,7 +114,6 @@ header{
   top: 0;
   left: 0;
   padding: var(--padding-global);
-  z-index: 10000;
   width: 100%;
   align-items: flex-end;
   gap : 3.5vw 7vw;
@@ -279,3 +289,5 @@ main[role=main]{
     margin-left: var(--padding-global);
   }
 }
+
+
