@@ -24,14 +24,6 @@
 }
 
 @font-face {
-  font-family: 'monument_extendedlight';
-  src: url('./fonts/monumentextended-light-webfont.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'monument_extendedultralight';
   src: url('./fonts/monumentextended-ultralight-webfont.woff2') format('woff2');
   font-weight: normal;
@@ -45,7 +37,7 @@
   --white : #ffffff;
   /* FONT */
   font-size: 62.5%;
-  --font-size-global : 1.3rem;
+  --font-size-global : 1.26rem;
   --line-height-global : 1.7;
   --letter-spacing-global : 0.1rem;
   --font-family : "monument_extendedbold", "Helvetica", "Arial", sans-serif;
@@ -53,7 +45,7 @@
   --padding-global : clamp(0rem, 5vw, 2.5rem);
   --length-logo : 5.6rem;
 }
-$size-bullet : 8px;
+
 
 /*  */
 /* RESET */
@@ -92,12 +84,12 @@ a{
 /* TITLE */
 /*  */
 h1{
-  font-size:clamp(5.9rem, 12vw, 15rem);
+  font-size:clamp(5.3rem, 10.6vw, 13rem);
   line-height: 0.77;
-  // text-transform: uppercase;
+  font-family: 'monument_extendedblack';
+  text-transform: uppercase;
   justify-self: flex-start;
-  letter-spacing: clamp(0.25rem, 0.75vw, 1rem);
-  flex : 1;
+  min-width: 50%;
 }
 
 /*  */
@@ -106,7 +98,6 @@ h1{
 header{
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
   align-items: center;
   position: fixed;
   top: 0;
@@ -115,7 +106,7 @@ header{
   z-index: 10000;
   width: 100%;
   align-items: flex-end;
-  gap : 4.8vw;
+  gap : 3.5vw 7vw;
 
   /*  */
   /* GIT */
@@ -150,6 +141,7 @@ nav[role=navigation]{
     position: relative;
 
     &::before{
+      $size-bullet : 8px;
       content: "";
       display: block;
       position: absolute;
@@ -279,11 +271,11 @@ main[role=main]{
 
   h1, #logo{
     flex: unset;
+    line-height: 1;
   }
 
   nav{
     flex: 1;
-    margin-left: calc(var(--padding-global) - #{$size-bullet});
+    margin-left: var(--padding-global);
   }
-
 }
