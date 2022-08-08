@@ -5,8 +5,8 @@ export class Cursor2 extends Cursors{
 
   constructor(index) {
     super(index);
-    this.speed = !isTouchDevices ? 0.5 : 0.9;
-    this.delta = !isTouchDevices ? 0.04 : 0.02;
+    this.speed = !isTouchDevices ? 0.5 : 1;
+    this.delta = !isTouchDevices ? 0.04 : 0.04;
     this.cursor = true;
     this.tinyCursor = false;
     this.init();
@@ -14,8 +14,8 @@ export class Cursor2 extends Cursors{
   }
 
   setParamsParticles() {
-    this.nbrParticles = 800;
-    this.radiusStart = this.diagonalWindow()/8;
+    this.nbrParticles =  !isTouchDevices ? 800 : 300;
+    this.radiusStart = this.diagonalWindow()/9;
     this.radiusDiff = 0;
     this.sorting = "desc";
     this.idGradient = "gradient";
