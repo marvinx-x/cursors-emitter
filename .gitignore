@@ -4,6 +4,3 @@ dist/
 .cache/
 package-lock.json
 .vscode
-src/partials/head_prod.pug
-src/images/og-image.jpg
-src/images/twitter-image.jpg
