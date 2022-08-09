@@ -1,4 +1,4 @@
-# Cursors emitter
+<!-- # Cursors emitter
 Set and params differents creative cursors and particles.
 See example by checking this [demo](https://www.marvinx.com/cursors-emitter).
 
@@ -78,4 +78,4 @@ Each page transitions use [Swup](https://swup.js.org/) library with theme [@swup
 
 
 
-
+ -->
