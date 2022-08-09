@@ -7,6 +7,8 @@ export class Cursor4 extends Cursors{
     super(index);
     this.speed = !isTouchDevices ? 0.5 : 1;
     this.delta = !isTouchDevices ? 0.05 : 0.05;
+    this.videoUrlDesktop =  new URL('../../video/space_desktop.mp4', import.meta.url );
+    this.videoUrlMobile =  new URL('../../video/space_mobile.mp4', import.meta.url );
     this.init();
     this.loop();
   }
@@ -30,8 +32,8 @@ export class Cursor4 extends Cursors{
     this.filterParticles = `url('#${this.idCursorFilter}')`;
     this.fillParticles = `url('#${this.idMask}')`;
     this.maskCursor = {
-      videoDesktop: "https://vod-progressive.akamaized.net/exp=1659995225~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3417%2F21%2F542086093%2F2570739662.mp4~hmac=2db82ab15ba714be963daffc60d6f3e69d1580e4664248b8bcb400ff44021bca/vimeo-prod-skyfire-std-us/01/3417/21/542086093/2570739662.mp4",
-      videoMobile : "https://vod-progressive.akamaized.net/exp=1659999283~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3374%2F21%2F541873248%2F2569764093.mp4~hmac=8167b8656813d11be8923b60cb06a3daf7afec814f0ce083dbf2782f29612a07/vimeo-prod-skyfire-std-us/01/3374/21/541873248/2569764093.mp4"
+      videoDesktop : this.videoUrlDesktop.href,
+      videoMobile : this.videoUrlMobile.href
     };
   }
 
@@ -47,7 +49,7 @@ export class Cursor4 extends Cursors{
       ${this.filterImageBack()}
       ${this.filterCursor()}
     </defs>
-    <foreignObject x="0" y="0" width="100%" height="100%" filter=url(#filter-image-back) style="opacity:0.05">${this.insertVideo()}</foreignObject>
+    <foreignObject x="0" y="0" width="100%" height="100%" filter=url(#filter-image-back) style="opacity:0.075">${this.insertVideo()}</foreignObject>
     <g id="maskReveal" mask="url(#theMask)">
       <foreignObject x="0" y="0" width="100%" height="100%" filter=url(#filter-image-cursor)>${this.insertVideo()}</foreignObject>
     </g>`

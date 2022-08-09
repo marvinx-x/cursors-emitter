@@ -62,7 +62,6 @@ export class Cursors{
   drawCursor() {
     this.widthContainer = window.innerWidth;
     this.heightContainer = window.innerHeight;
-
     this.container.innerHTML =
       `<svg
         width="${this.widthContainer}"
@@ -74,12 +73,8 @@ export class Cursors{
         ${this.maskCursor ? this.drawMaskCursor() : this.drawParticles()}
         ${this.drawTinyCursor()}
     </svg>`;
-
     this.svg = this.container.querySelector('svg');
     this.tinyCursor ? this.nodeCursors = this.container.querySelectorAll('.tiny-cursor circle') : null;
-
-
-
     this.particles = Array.from(this.container.querySelectorAll('.particles circle'));
     this.sorting === "desc" ? this.sortParticles() : null;
     this.points = Array(this.nbrParticles).fill().map((el,i) => {
@@ -130,7 +125,6 @@ export class Cursors{
       tinyCursor.style.transform = this.rotate + this.scale;
     }
   }
-
 
   drawParticles() {
     return `<g class="particles" filter=${this.filterParticles || "none"}>
