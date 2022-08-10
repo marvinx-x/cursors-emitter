@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/marvinx-x/cursors-emitter.git"
+    "url": "git+ssh://git@github.com/marvinx-x/cursors-emitter.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/marvinx-x/cursors-emitter/issues"
+    "url": "https://github.com/marvinx-x/cursors-emitter/issues"
   },
-  "homepage": "https://gitlab.com/marvinx-x/cursors-emitter#readme",
+  "homepage": "https://github.com/marvinx-x/cursors-emitter#readme",
   "devDependencies": {
     "@parcel/transformer-pug": "^2.6.2",
     "@parcel/transformer-sass": "^2.6.2",
