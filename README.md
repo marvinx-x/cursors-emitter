@@ -1,7 +1,7 @@
 # Cursors emitter
 
-Declinations of cursors playing on different effects: Waves, Trail, Tube, Mask…
-Each of them is fully configurable.
+Declinations of cursors playing on different effects: Waves, Trail, Tube, Mask… <br>
+Each of them is fully configurable. <br>
 Use it and adapt it to different projects and designs.
 
 See example by checking this [demo](https://marvinx-cursors-emitter.netlify.app/).
