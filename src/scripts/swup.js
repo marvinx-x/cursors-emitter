@@ -2,7 +2,6 @@ import Swup from 'swup';
 import SwupFadeTheme from '@swup/fade-theme';
 import { setCursor } from './../index'
 
-
 export function swupTransitions() {
 
   const swup = new Swup({
@@ -11,6 +10,7 @@ export function swupTransitions() {
   });
 
   setCursor();
+
   swup.on('contentReplaced',() => {
      setCursor();
   });
