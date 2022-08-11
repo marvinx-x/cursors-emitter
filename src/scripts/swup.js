@@ -1,6 +1,13 @@
 import Swup from 'swup';
 import SwupFadeTheme from '@swup/fade-theme';
-import { setCursor } from './../index'
+import { setCursor } from './../index';
+
+
+function FontsLoaded() {
+  document.fonts.ready.then(() => {
+    document.querySelector('header[role=banner]').classList.add('font-loaded');
+  });
+}
 
 export function swupTransitions() {
 
@@ -9,9 +16,13 @@ export function swupTransitions() {
     plugins: [new SwupFadeTheme()]
   });
 
-  setCursor();
+  const initPage = () => {
+    setCursor();
+    FontsLoaded();
+  }
 
+  initPage();
   swup.on('contentReplaced',() => {
-     setCursor();
+    initPage();
   });
 }

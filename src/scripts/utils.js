@@ -12,7 +12,6 @@ const vhDevices = () => {
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 
-
 export function utils() {
   return new Promise(resolve => {
     setTimeout(() => {

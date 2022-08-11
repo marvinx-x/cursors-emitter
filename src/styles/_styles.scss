@@ -116,6 +116,11 @@ header{
   width: 100%;
   align-items: flex-end;
   gap : 3.5vw 7vw;
+  opacity: 0;
+
+  &.font-loaded{
+    opacity: 1;
+  }
 
   /*  */
   /* GIT */
