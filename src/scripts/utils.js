@@ -1,6 +1,8 @@
 const { detect } = require('detect-browser');
 const browser = detect();
 export const isTouchDevices = browser.os === "Android OS" || browser.os === "iOS";
+export const isSafari = browser.name === "safari";
+
 
 export const getIndexPage = () => {
   const pathNameMatch = window.location.pathname.match(/\d/);
@@ -16,6 +18,8 @@ export function utils() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
+
+      console.log(browser)
       vhDevices();
       window.addEventListener('resize', () => { vhDevices(); });
     }, 10);

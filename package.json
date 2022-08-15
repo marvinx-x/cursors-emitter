@@ -22,7 +22,8 @@
     "@parcel/transformer-pug": "^2.6.2",
     "@parcel/transformer-sass": "^2.6.2",
     "parcel": "^2.1.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "sharp": "^0.29.3"
   },
   "dependencies": {
     "@swup/fade-theme": "^1.0.5",

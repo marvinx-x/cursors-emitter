@@ -7,7 +7,6 @@ export class Cursor3 extends Cursors{
   constructor(index) {
     super(index);
     this.speed = !isTouchDevices ? 0.1 : 1;
-    this.delta = 0.04;
     this.init();
     this.loop();
   }
@@ -30,10 +29,15 @@ export class Cursor3 extends Cursors{
     this.radiusDiff = 1;
     this.strokeWidthParticles = 1;
     this.strokeOpacityParticles = .2;
-    this.nbrParticles = 120;
+    this.nbrParticles = !isTouchDevices ? 120 : 60;
     this.directionRadius = ">";
     this.radiusStart = this.diagonalWindow()/3;
     this.sorting = "desc";
+    this.transitionParticles = {
+      duration: !isTouchDevices ? 20 : 100,
+      delay: !isTouchDevices ? 1 : 4,
+      easing : "linear"
+    };
   }
 }
 
