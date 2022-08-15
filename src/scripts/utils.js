@@ -18,8 +18,6 @@ export function utils() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
-
-      console.log(browser)
       vhDevices();
       window.addEventListener('resize', () => { vhDevices(); });
     }, 10);
