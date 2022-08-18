@@ -1,26 +1,45 @@
-# Cursors emitter
+# SVG Cursors Emitter
 
-Declinations of cursors playing on different effects: Waves, Trail, Tube, Mask… <br>
-Each of them is fully configurable. <br>
-Use it and adapt it to different projects and designs.
-
-See example by checking this [demo](https://marvinx-cursors-emitter.netlify.app/).
+*A description of the demo goes here.*
 
 ![image](https://marvinx.com/assets/images/cursorsemitter-main.png)
-### Tech
-* [parcel](https://parceljs.org/) - Zero configuration build tool
-* [pugJS](https://pugjs.org) - Clean, whitespace sensitive syntax for writing HTML
-* [SCSS](https://sass-lang.com/) - CSS preprocessor
-### Installation
-Using npm:
-```sh
-$ npm install
+
+[Article on Codrops](https://tympanus.net/codrops/?p=)
+
+[Demo](https://marvinx-cursors-emitter.netlify.app/)
+
+
+## Installation
+
+Install dependencies:
+
 ```
-Start the application:
-```sh
-$ npm start
+npm install
 ```
-Create minified bundle of your app:
-```sh
-$ npm run build
+
+Compile the code for development and start a local server:
+
 ```
+npm start
+```
+
+Create the build:
+
+```
+npm run build
+```
+
+## Credits
+
+- Images And Videos from [Pexels](https://www.pexels.com/fr-fr/collections/space-astronauts-mars-srn3hh1/)
+
+## Misc
+
+Follow *Author*: [Twitter](https://twitter.com/Marvin_X_), [Linkedin](https://www.linkedin.com/in/marlenebruhat/), [Instagram](https://www.instagram.com/marvinx.creative.dev/), [GitHub](https://github.com/marvinx-x)
+
+Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www.facebook.com/codrops), [GitHub](https://github.com/codrops), [Instagram](https://www.instagram.com/codropsss/)
+
+## License
+[MIT](LICENSE)
+
+Made with :blue_heart:  by [Codrops](http://www.codrops.com)
