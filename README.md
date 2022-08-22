@@ -1,6 +1,6 @@
 # SVG Cursors Emitter
 
-*A description of the demo goes here.*
+Several mousemove events particles effects done with JS and SVG.
 
 ![image](https://marvinx.com/assets/images/cursorsemitter-main.png)
 
