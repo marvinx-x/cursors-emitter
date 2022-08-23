@@ -81,16 +81,10 @@ a{
   color : var(--white);
 }
 
-video::-webkit-media-controls {
-  display: none;
-}
-
-
 video{
+  pointer-events: none;
   object-fit: cover;
 }
-
-
 
 /*  */
 /* TITLE */
