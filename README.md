@@ -6,7 +6,7 @@ Several mousemove events particles effects done with JS and SVG.
 
 [Article on Codrops](https://tympanus.net/codrops/?p=)
 
-[Demo](https://marvinx-cursors-emitter.netlify.app/)
+[Demo](https://marvinx.com/cursors-emitter/)
 
 
 ## Installation
@@ -31,11 +31,12 @@ npm run build
 
 ## Credits
 
+- Design from [Ghislain Auzillon](https://www.ghislainauzillon.com/)
 - Images And Videos from [Pexels](https://www.pexels.com/fr-fr/collections/space-astronauts-mars-srn3hh1/)
 
 ## Misc
 
-Follow *Marvinx*: [Twitter](https://twitter.com/Marvin_X_), [Linkedin](https://www.linkedin.com/in/marlenebruhat/), [Instagram](https://www.instagram.com/marvinx.creative.dev/), [GitHub](https://github.com/marvinx-x)
+Follow Marvinx: [Twitter](https://twitter.com/Marvin_X_), [Linkedin](https://www.linkedin.com/in/marlenebruhat/), [Instagram](https://www.instagram.com/marvinx.creative.dev/), [GitHub](https://github.com/marvinx-x)
 
 Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www.facebook.com/codrops), [GitHub](https://github.com/codrops), [Instagram](https://www.instagram.com/codropsss/)
 
