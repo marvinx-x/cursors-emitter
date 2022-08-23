@@ -9,6 +9,16 @@ function FontsLoaded() {
   });
 }
 
+
+function removeControlsVideo() {
+  const videos = document.querySelectorAll('video');
+  if (videos.length > 0) {
+    for (const video of videos) {
+      video.removeAttribute('controls');
+    }
+  }
+}
+
 export function swupTransitions() {
 
   const swup = new Swup({
@@ -19,6 +29,7 @@ export function swupTransitions() {
   const initPage = () => {
     setCursor();
     FontsLoaded();
+    removeControlsVideo();
   }
 
   initPage();
