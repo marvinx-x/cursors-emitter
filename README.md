@@ -4,7 +4,7 @@ Several mousemove events particles effects done with JS and SVG.
 
 ![image](https://marvinx.com/assets/images/cursorsemitter-main.png)
 
-[Article on Codrops](https://tympanus.net/codrops/?p=64636&preview=true&_thumbnail_id=64791)
+[Article on Codrops](https://tympanus.net/codrops/2022/08/24/custom-svg-cursors-with-an-interactive-emitter-effect/)
 
 [Demo](https://marvinx.com/cursors-emitter/)
 
