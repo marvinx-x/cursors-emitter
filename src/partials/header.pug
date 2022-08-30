@@ -7,14 +7,6 @@ header(role="banner")
       li: a(href="index"+(key == 0 ? "" : key+1)+".pug"): span= "demo "+(key+1)
         i= " ("+cursor+")"
 
-  //-ul
-    - var urlGits = ["https://gitlab.com/marvinx-x", "https://github.com/marvinx-x", "https://bitbucket.org/Marvin_X"]
-    each url in urlGits
-      - var gitName = url.substring(url.indexOf('//') + 2, url.indexOf('.'));
-      - var firstLetterGit = gitName.charAt(0).toUpperCase();
-      - var name = firstLetterGit + gitName.slice(1)
-      li: a(href=url+"/cursors-emitter" title=name target="_blank")= name
-
   #logo
     a(href="https://marvinx.com" title="Marlène Bruhat | Marvinx | Creative Developer" target="_blank")
       - for(var i=0; i < 2; i++)
