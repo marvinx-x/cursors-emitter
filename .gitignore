@@ -4,3 +4,4 @@ dist/
 .cache/
 package-lock.json
 .vscode
+.node_modules
